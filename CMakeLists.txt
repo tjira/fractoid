@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.16)
+project(Fractoid)
+set(CMAKE_CXX_STANDARD 20)
+find_package(OpenCV REQUIRED)
+find_package(Boost COMPONENTS program_options REQUIRED)
+include_directories(${OpenCV_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
+add_executable(fractoid src/main.cpp src/Fractal.cpp src/Fractal.h src/Mandelbrot.cpp src/Mandelbrot.h src/BurningShip.cpp src/BurningShip.h src/Julia.cpp src/Julia.h src/Phoenix.cpp src/Phoenix.h src/Manowar.cpp src/Manowar.h src/Newton.cpp src/Newton.h)
+target_link_libraries(fractoid ${OpenCV_LIBS} ${Boost_LIBRARIES})
