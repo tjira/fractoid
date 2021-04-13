@@ -8,6 +8,14 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui.generateButton, &QPushButton::clicked, this, &MainWindow::generate);
 	connect(ui.fractal, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::resetView);
 	connect(ui.save, &QAction::triggered, this, &MainWindow::save);
+	connect(ui.iterations, &QSpinBox::editingFinished, this, &MainWindow::generate);
+	connect(ui.centerRe, &QDoubleSpinBox::editingFinished, this, &MainWindow::generate);
+	connect(ui.centerIm, &QDoubleSpinBox::editingFinished, this, &MainWindow::generate);
+	connect(ui.zoom, &QDoubleSpinBox::editingFinished, this, &MainWindow::generate);
+	connect(ui.juliaComplexRe, &QDoubleSpinBox::editingFinished, this, &MainWindow::generate);
+	connect(ui.juliaComplexIm, &QDoubleSpinBox::editingFinished, this, &MainWindow::generate);
+	connect(ui.phoenixComplexRe, &QDoubleSpinBox::editingFinished, this, &MainWindow::generate);
+	connect(ui.phoenixComplexIm, &QDoubleSpinBox::editingFinished, this, &MainWindow::generate);
 }
 
 void MainWindow::generate() {
