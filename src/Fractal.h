@@ -16,14 +16,13 @@
 class Fractal {
 public:
     explicit Fractal(int iterations, double height);
-    void show(std::vector<int> resolution, std::complex<double> center, double zoom);
+	void paint(cv::Mat canvas, double re, double im, double zoom);
 
 protected:
-    cv::Mat2d* randomizer = new cv::Mat2d(3, 2);
+    cv::Mat2d *randomizer = new cv::Mat2d(3, 2);
     int iterations;
 
 private:
-    void paint(cv::Mat canvas, double re, double im, double zoom);
     virtual cv::Vec3b function(double pRe, double pIm) {return cv::Vec3b(0, 0, 0);};
     double height;
 };

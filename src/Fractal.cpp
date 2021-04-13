@@ -17,17 +17,3 @@ void Fractal::paint(cv::Mat canvas, double pRe, double pIm, double zoom) {
         }
     }
 }
-
-void Fractal::show(std::vector<int> resolution, std::complex<double> center, double zoom) {
-    cv::Mat3b canvas(resolution[1], resolution[0]);
-    auto start = std::chrono::high_resolution_clock::now();
-    paint(canvas, center.real(), center.imag(), zoom);
-    auto end = std::chrono::high_resolution_clock::now();
-    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-    std::cout << "Fractal was generated in " << elapsed.count() << " ms." << std::endl;
-    double scale = std::min(1024.0/resolution[0], 768.0/resolution[1]);
-    cv::resize(canvas, canvas, cv::Size(), scale, scale);
-    cv::imshow("Fractal", canvas);
-    cv::waitKey(0);
-    cv::destroyAllWindows();
-}
