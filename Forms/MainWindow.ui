@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1089</width>
+    <width>1090</width>
     <height>622</height>
    </rect>
   </property>
@@ -203,7 +203,7 @@
          <double>0.100000000000000</double>
         </property>
         <property name="value">
-         <double>1.000000000000000</double>
+         <double>1.250000000000000</double>
         </property>
        </widget>
       </item>
@@ -236,7 +236,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1089</width>
+     <width>1090</width>
      <height>22</height>
     </rect>
    </property>
@@ -246,6 +246,7 @@
     </property>
     <addaction name="saveAsAction"/>
     <addaction name="settingsAction"/>
+    <addaction name="quitAction"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -260,6 +261,11 @@
   <action name="settingsAction">
    <property name="text">
     <string>Settings</string>
+   </property>
+  </action>
+  <action name="quitAction">
+   <property name="text">
+    <string>Quit</string>
    </property>
   </action>
  </widget>

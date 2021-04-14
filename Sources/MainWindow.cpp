@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
 	constructors.insert(std::pair("Burning Ship Fractal", [this] {
 		return Fractal::BurningShip(ui->iterationsSpin->value(), 10, true);}));
 	constructors.insert(std::pair("Julia Set", [this] {
-		return Fractal::Julia(ui->iterationsSpin->value(), 10, true, std::complex<double>{settings->ui->juliaComplexReSpin->value(), settings->ui->juliaComplexImSpin->value()});}));
+		return Fractal::Julia(ui->iterationsSpin->value(), 10, true, settings->ui->juliaComplexReSpin->value(), settings->ui->juliaComplexImSpin->value());}));
 	constructors.insert(std::pair("Mandelbrot Set", [this] {
 		return Fractal::Mandelbrot(ui->iterationsSpin->value(), 10, true);}));
 	constructors.insert(std::pair("Manowar Fractal", [this] {
@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
 	constructors.insert(std::pair("Newton Fractal", [this] {
 		return Fractal::Newton(ui->iterationsSpin->value());}));
 	constructors.insert(std::pair("Phoenix Fractal", [this] {
-		return Fractal::Phoenix(ui->iterationsSpin->value(), 10, true, std::complex<double>{settings->ui->phoenixComplexReSpin->value(), settings->ui->phoenixComplexImSpin->value()});}));
+		return Fractal::Phoenix(ui->iterationsSpin->value(), 10, true, settings->ui->phoenixComplexReSpin->value(), settings->ui->phoenixComplexImSpin->value());}));
 	defaults.insert(std::pair("Burning Ship Fractal", std::array<double, 3>{-0.45, 0.55, 1.2}));
 	defaults.insert(std::pair("Julia Set", std::array<double, 3>{0, 0, 1.25}));
 	defaults.insert(std::pair("Mandelbrot Set", std::array<double, 3>{-0.75, 0, 1.25}));
@@ -24,17 +24,24 @@ MainWindow::MainWindow(QWidget *parent)
 	defaults.insert(std::pair("Newton Fractal", std::array<double, 3>{0, 0, 1}));
 	defaults.insert(std::pair("Phoenix Fractal", std::array<double, 3>{0, 0, 1.5}));
 	connect(ui->generateButton, &QPushButton::clicked, this, &MainWindow::generate);
+	connect(settings->ui->seedSpin, qOverload<int>(&QSpinBox::valueChanged), this, &MainWindow::generate);
 	connect(ui->fractalCombo, qOverload<int>(&QComboBox::currentIndexChanged), this, &MainWindow::reset);
 	connect(ui->saveAsAction, &QAction::triggered, this, &MainWindow::saveAs);
 	connect(ui->settingsAction, &QAction::triggered, settings, &QDialog::show);
+	connect(ui->quitAction, &QAction::triggered, this, &QGuiApplication::quit);
 	generate();
 }
 
+MainWindow::~MainWindow() {
+	delete settings;
+	delete ui;
+}
+
 void MainWindow::generate() {
-	cv::theRNG().state = 4294967295;
-	fractal = constructors[ui->fractalCombo->currentText().toUtf8().constData()]();
-	QThread *thread = QThread::create([this] {
+	Fractal fractal = constructors[ui->fractalCombo->currentText().toUtf8().constData()]();
+	QThread *thread = QThread::create([this, fractal] {
 		cv::Mat3b canvas = cv::Mat3b(600, 800);
+		cv::theRNG().state = settings->ui->seedSpin->value();
 		fractal.paint(canvas, ui->centerReSpin->value(), ui->centerImSpin->value(), ui->zoomSpin->value());
 		cv::cvtColor(canvas, canvas, cv::COLOR_BGR2RGB);
 		QPixmap image = QPixmap::fromImage(QImage(canvas.data, canvas.cols, canvas.rows, QImage::Format_RGB888));
@@ -55,8 +62,8 @@ void MainWindow::reset() {
 
 void MainWindow::saveAs() {
 	QString fileName = QFileDialog::getSaveFileName(this, "Save Image", "fractal.png", "Image Files (*.jpg *.png)");
-	fractal = constructors[ui->fractalCombo->currentText().toUtf8().constData()]();
-	QThread *thread = QThread::create([this, fileName] {
+	Fractal fractal = constructors[ui->fractalCombo->currentText().toUtf8().constData()]();
+	QThread *thread = QThread::create([this, fileName, fractal] {
 		if (!fileName.isEmpty()) {
 			cv::Mat3b canvas(1440, 1920);
 			fractal.paint(canvas, ui->centerReSpin->value(), ui->centerImSpin->value(), ui->zoomSpin->value());

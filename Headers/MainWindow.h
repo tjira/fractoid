@@ -14,9 +14,10 @@ namespace Ui {
 class MainWindow : public QMainWindow {
 public:
 	explicit MainWindow(QWidget* parent = nullptr);
+	~MainWindow();
 
 private:
-	Fractal fractal = Fractal::Mandelbrot(100, 10, true);
+	//Fractal fractal = Fractal::Mandelbrot(100, 10, true);
 	std::map<std::string, std::function<Fractal()>> constructors;
 	std::map<std::string, std::array<double, 3>> defaults;
 	Ui::MainWindow *ui;
