@@ -1,12 +1,11 @@
 #include "../Headers/Fractal.h"
 
-Fractal::Fractal(std::function<cv::Vec3b(double, double)> *function, double height) {
+Fractal::Fractal(std::function<cv::Vec3b(double, double)> *function) {
 	this->function = *function;
-    this->height = height;
 }
 
 void Fractal::paint(cv::Mat canvas, double pRe, double pIm, double zoom) const {
-    double unit = height / canvas.rows / zoom;
+    double unit = 3.0 / canvas.rows / zoom;
     double origin[2] = {pRe - unit * canvas.cols / 2, pIm + unit * canvas.rows / 2};
     for (int row = 0; row < canvas.rows; row++) {
         for (int column = 0; column < canvas.cols; column++) {
@@ -30,7 +29,7 @@ Fractal Fractal::BurningShip(int iterations, int escape, bool smooth) {
 		}
 		SMOOTH; return (n == iterations) ? cv::Vec3b(0, 0, 0) : COLOR;
 	};
-	return Fractal(&function, 2.6);
+	return Fractal(&function);
 }
 
 Fractal Fractal::Julia(int iterations, int escape, bool smooth, std::complex<double> c) {
@@ -47,7 +46,7 @@ Fractal Fractal::Julia(int iterations, int escape, bool smooth, std::complex<dou
 		}
 		SMOOTH; return (n == iterations) ? cv::Vec3b(0, 0, 0) : COLOR;
 	};
-	return Fractal(&function, 2.9);
+	return Fractal(&function);
 }
 
 Fractal Fractal::Mandelbrot(int iterations, int escape, bool smooth) {
@@ -64,7 +63,7 @@ Fractal Fractal::Mandelbrot(int iterations, int escape, bool smooth) {
 		}
 		SMOOTH; return (n == iterations) ? cv::Vec3b(0, 0, 0) : COLOR;
 	};
-	return Fractal(&function, 2.4);
+	return Fractal(&function);
 }
 
 Fractal Fractal::Manowar(int iterations, int escape, bool smooth) {
@@ -84,7 +83,7 @@ Fractal Fractal::Manowar(int iterations, int escape, bool smooth) {
 		}
 		SMOOTH; return (n == iterations) ? cv::Vec3b(0, 0, 0) : COLOR;
 	};
-	return Fractal(&function, 2.2);
+	return Fractal(&function);
 }
 
 Fractal Fractal::Newton(int iterations) {
@@ -103,7 +102,7 @@ Fractal Fractal::Newton(int iterations) {
 		auto sn = (double) n;
 		return (n == iterations) ? cv::Vec3b(0, 0, 0) : COLOR;
 	};
-	return Fractal(&function, 3);
+	return Fractal(&function);
 }
 
 Fractal Fractal::Phoenix(int iterations, int escape, bool smooth, std::complex<double> c) {
@@ -123,5 +122,5 @@ Fractal Fractal::Phoenix(int iterations, int escape, bool smooth, std::complex<d
 		}
 		SMOOTH; return (n == iterations) ? cv::Vec3b(0, 0, 0) : COLOR;
 	};
-	return Fractal(&function, 2.4);
+	return Fractal(&function);
 }

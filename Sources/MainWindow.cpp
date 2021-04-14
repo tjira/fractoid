@@ -17,12 +17,12 @@ MainWindow::MainWindow(QWidget *parent)
 		return Fractal::Newton(ui->iterationsSpin->value());}));
 	constructors.insert(std::pair("Phoenix Fractal", [this] {
 		return Fractal::Phoenix(ui->iterationsSpin->value(), 10, true, std::complex<double>{settings->ui->phoenixComplexReSpin->value(), settings->ui->phoenixComplexImSpin->value()});}));
-	defaults.insert(std::pair("Burning Ship Fractal", std::array<double, 3>{-0.45, 0.55, 1}));
-	defaults.insert(std::pair("Julia Set", std::array<double, 3>{0, 0, 1.2}));
-	defaults.insert(std::pair("Mandelbrot Set", std::array<double, 3>{-0.75, 0, 1}));
-	defaults.insert(std::pair("Manowar Fractal", std::array<double, 3>{-0.35, 0, 1.7}));
+	defaults.insert(std::pair("Burning Ship Fractal", std::array<double, 3>{-0.45, 0.55, 1.2}));
+	defaults.insert(std::pair("Julia Set", std::array<double, 3>{0, 0, 1.25}));
+	defaults.insert(std::pair("Mandelbrot Set", std::array<double, 3>{-0.75, 0, 1.25}));
+	defaults.insert(std::pair("Manowar Fractal", std::array<double, 3>{-0.35, 0, 2.4}));
 	defaults.insert(std::pair("Newton Fractal", std::array<double, 3>{0, 0, 1}));
-	defaults.insert(std::pair("Phoenix Fractal", std::array<double, 3>{0, 0, 1.1}));
+	defaults.insert(std::pair("Phoenix Fractal", std::array<double, 3>{0, 0, 1.5}));
 	connect(ui->generateButton, &QPushButton::clicked, this, &MainWindow::generate);
 	connect(ui->fractalCombo, qOverload<int>(&QComboBox::currentIndexChanged), this, &MainWindow::reset);
 	connect(ui->saveAsAction, &QAction::triggered, this, &MainWindow::saveAs);

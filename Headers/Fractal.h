@@ -15,7 +15,7 @@
 
 class Fractal {
 public:
-    explicit Fractal(std::function<cv::Vec3b(double, double)> *function, double height);
+    explicit Fractal(std::function<cv::Vec3b(double, double)> *function);
 	void paint(cv::Mat canvas, double re, double im, double zoom) const;
     static Fractal BurningShip(int iterations, int escape, bool smooth);
 	static Fractal Julia(int iterations, int escape, bool smooth, std::complex<double> c);
@@ -26,7 +26,6 @@ public:
 
 private:
 	std::function<cv::Vec3b(double, double)> function;
-    double height;
 };
 
 #endif
