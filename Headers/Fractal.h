@@ -1,3 +1,4 @@
+#include <QObject>
 #include <opencv2/opencv.hpp>
 
 #define SMOOTH \
@@ -12,20 +13,20 @@
 #ifndef FRACTOID_FRACTAL_H
 #define FRACTOID_FRACTAL_H
 
-
 class Fractal {
 public:
-    explicit Fractal(int iterations, double height);
-	void paint(cv::Mat canvas, double re, double im, double zoom);
-
-protected:
-    cv::Mat2d *randomizer = new cv::Mat2d(3, 2);
-    int iterations;
+    explicit Fractal(std::function<cv::Vec3b(double, double)> *function, double height);
+	void paint(cv::Mat canvas, double re, double im, double zoom) const;
+    static Fractal BurningShip(int iterations, int escape, bool smooth);
+	static Fractal Julia(int iterations, int escape, bool smooth, std::complex<double> c);
+	static Fractal Mandelbrot(int iterations, int escape, bool smooth);
+	static Fractal Manowar(int iterations, int escape, bool smooth);
+	static Fractal Newton(int iterations);
+	static Fractal Phoenix(int iterations, int escape, bool smooth, std::complex<double> c);
 
 private:
-    virtual cv::Vec3b function(double pRe, double pIm) {return cv::Vec3b(0, 0, 0);};
+	std::function<cv::Vec3b(double, double)> function;
     double height;
 };
-
 
 #endif
