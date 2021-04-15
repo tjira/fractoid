@@ -1,5 +1,8 @@
 #include <QFileDialog>
+#include <QInputDialog>
+#include <QShortcut>
 #include <QThread>
+#include <QDebug>
 #include "ui_MainWindow.h"
 #include "SettingsWindow.h"
 #include "Fractal.h"
@@ -12,12 +15,13 @@ namespace Ui {
 }
 
 class MainWindow : public QMainWindow {
+	Q_OBJECT
 public:
 	explicit MainWindow(QWidget* parent = nullptr);
 	~MainWindow();
 
 private:
-	//Fractal fractal = Fractal::Mandelbrot(100, 10, true);
+	QThread *worker = QThread::create([] {});
 	std::map<std::string, std::function<Fractal()>> constructors;
 	std::map<std::string, std::array<double, 3>> defaults;
 	Ui::MainWindow *ui;
