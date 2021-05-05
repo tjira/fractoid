@@ -37,9 +37,10 @@ private:
 
 private slots:
 	void display();
+	void move(QPoint point);
 	void reset();
 	void render();
-	void zoom(QPoint point);
+	void zoom(QPoint point, Qt::MouseButton button);
 };
 
 #endif

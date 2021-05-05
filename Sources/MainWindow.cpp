@@ -4,6 +4,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 	ui->setupUi(this);
 	connect(ui->settings, &QAction::triggered, settings, &QDialog::show);
 	connect(ui->quit, &QAction::triggered, this, &QGuiApplication::quit);
+	connect(ui->image, &InteractiveLabel::dragged, this, &MainWindow::move);
 	connect(ui->image, &InteractiveLabel::doubleClicked, this, &MainWindow::zoom);
 	auto *validator = new QDoubleValidator();
 	ui->re->setValidator(validator);
@@ -38,6 +39,14 @@ cv::Mat3b MainWindow::generate(int height, int width) {
 	return canvas;
 }
 
+void MainWindow::move(QPoint point) {
+	double re = ui->re->text().toDouble() - 3.0 / 800 / ui->zoom->text().toDouble() * point.x();
+	double im = ui->im->text().toDouble() + 3.0 / 600 / ui->zoom->text().toDouble() * point.y();
+	ui->re->setText(QString::number(re, 'f', 15).remove(QRegExp("\\.?0+$")));
+	ui->im->setText(QString::number(im, 'f', 15).remove(QRegExp("\\.?0+$")));
+	display();
+}
+
 void MainWindow::render() {
 	if (worker->isRunning()) {return;}
 	bool resolutionConfirmed;
@@ -66,11 +75,12 @@ void MainWindow::reset() {
 	display();
 }
 
-void MainWindow::zoom(QPoint point) {
+void MainWindow::zoom(QPoint point, Qt::MouseButton button) {
 	double re = ui->re->text().toDouble() + 3.0 / 800 / ui->zoom->text().toDouble() * (point.x() - 400);
 	double im = ui->im->text().toDouble() - 3.0 / 600 / ui->zoom->text().toDouble() * (point.y() - 300);
-	ui->re->setText(QString::number(re));
-	ui->im->setText(QString::number(im));
-	ui->zoom->setText(QString::number(ui->zoom->text().toDouble() * 1.3));
+	ui->re->setText(QString::number(re, 'f', 15).remove(QRegExp("\\.?0+$")));
+	ui->im->setText(QString::number(im, 'f', 15).remove(QRegExp("\\.?0+$")));
+	double factor = button == Qt::MouseButton::LeftButton ? 1.25 : 0.8;
+	ui->zoom->setText(QString::number(ui->zoom->text().toDouble() * factor, 'f', 2));
 	display();
 }

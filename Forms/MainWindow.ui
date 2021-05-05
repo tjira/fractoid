@@ -57,7 +57,21 @@
       <property name="bottomMargin">
        <number>6</number>
       </property>
-      <item row="10" column="0" colspan="2">
+      <item row="1" column="0">
+       <widget class="QLabel" name="iterationsLabel">
+        <property name="text">
+         <string>Iterations:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="reLabel">
+        <property name="text">
+         <string>Center Re:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="0" colspan="2">
        <layout class="QHBoxLayout" name="progressLayout">
         <item>
          <widget class="QProgressBar" name="progress"/>
@@ -74,18 +88,33 @@
         </item>
        </layout>
       </item>
-      <item row="8" column="0" colspan="2">
-       <spacer name="spacer1">
+      <item row="4" column="0">
+       <widget class="QLabel" name="imLabel">
+        <property name="text">
+         <string>Center Im:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="fractalLabel">
+        <property name="text">
+         <string>Fractal:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0" colspan="2">
+       <widget class="Line" name="line2">
         <property name="orientation">
-         <enum>Qt::Vertical</enum>
+         <enum>Qt::Horizontal</enum>
         </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="re">
+        <property name="text">
+         <string>-0.75</string>
         </property>
-       </spacer>
+       </widget>
       </item>
       <item row="7" column="0" colspan="2">
        <widget class="QPushButton" name="generate">
@@ -97,45 +126,23 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="zoomLabel">
+      <item row="4" column="1">
+       <widget class="QLineEdit" name="im">
         <property name="text">
-         <string>Zoom:</string>
+         <string>0</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="fractalLabel">
-        <property name="text">
-         <string>Fractal:</string>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="iterations">
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::UpDownArrows</enum>
         </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="imLabel">
-        <property name="text">
-         <string>Center Im:</string>
+        <property name="maximum">
+         <number>10000</number>
         </property>
-       </widget>
-      </item>
-      <item row="6" column="0" colspan="2">
-       <widget class="Line" name="line2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0" colspan="2">
-       <widget class="Line" name="line1">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="iterationsLabel">
-        <property name="text">
-         <string>Iterations:</string>
+        <property name="value">
+         <number>100</number>
         </property>
        </widget>
       </item>
@@ -182,26 +189,32 @@
         </item>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="reLabel">
-        <property name="text">
-         <string>Center Re:</string>
+      <item row="2" column="0" colspan="2">
+       <widget class="Line" name="line1">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
-       <widget class="QLineEdit" name="re">
+      <item row="5" column="0">
+       <widget class="QLabel" name="zoomLabel">
         <property name="text">
-         <string>-0.75</string>
+         <string>Zoom:</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
-       <widget class="QLineEdit" name="im">
-        <property name="text">
-         <string>0</string>
+      <item row="9" column="0" colspan="2">
+       <spacer name="spacer1">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
         </property>
-       </widget>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
       </item>
       <item row="5" column="1">
        <widget class="QLineEdit" name="zoom">
@@ -210,16 +223,10 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="iterations">
-        <property name="buttonSymbols">
-         <enum>QAbstractSpinBox::UpDownArrows</enum>
-        </property>
-        <property name="maximum">
-         <number>10000</number>
-        </property>
-        <property name="value">
-         <number>100</number>
+      <item row="8" column="0" colspan="2">
+       <widget class="QPushButton" name="reset">
+        <property name="text">
+         <string>Reset</string>
         </property>
        </widget>
       </item>
@@ -325,6 +332,22 @@
     <hint type="sourcelabel">
      <x>-1</x>
      <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>528</x>
+     <y>310</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>reset</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>reset()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>929</x>
+     <y>245</y>
     </hint>
     <hint type="destinationlabel">
      <x>528</x>
