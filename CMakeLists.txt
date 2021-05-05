@@ -18,6 +18,8 @@ add_executable(fractoid
         Sources/Fractal.cpp
         Sources/MainWindow.cpp
         Sources/SettingsWindow.cpp
+        Sources/InteractiveLabel.cpp
+        Headers/InteractiveLabel.h
 )
 
 target_link_libraries(fractoid ${OpenCV_LIBS} Qt5::Widgets)

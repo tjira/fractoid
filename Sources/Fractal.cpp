@@ -4,9 +4,7 @@ Fractal::Fractal(std::function<double(double, double)> *function) {
 	this->function = *function;
 }
 
-Fractal::~Fractal() = default;
-
-void Fractal::paint(cv::Mat canvas, double pRe, double pIm, double zoom) {
+void Fractal::paint(cv::Mat3b canvas, double pRe, double pIm, double zoom) {
 	cv::Mat2d randomizer = cv::Mat2d(3, 2);
 	randu(randomizer, cv::Scalar(0), cv::Scalar(100));
     double unit = 3.0 / canvas.rows / zoom;
@@ -47,6 +45,21 @@ Fractal Fractal::Julia(int iterations, int escape, bool smooth, double cRe, doub
 			zReTemp = zRe;
 			zRe = zRe * zRe - zIm * zIm + cRe;
 			zIm = 2 * zReTemp * zIm + cIm;
+			n++;
+		}
+		return ((smooth && n < iterations) ? n + 1 - log2(log(zRe * zRe + zIm * zIm) / 2) : (double) n) / iterations;
+	};
+	return Fractal(&function);
+}
+
+Fractal Fractal::Mandelbar(int iterations, int escape, bool smooth) {
+	std::function<double(double, double)> function = [iterations, escape, smooth] (double pRe, double pIm) {
+		int n = 0;
+		double zRe = 0, zIm = 0, zReTemp;
+		while (zRe * zRe + zIm * zIm < escape * escape && n < iterations) {
+			zReTemp = zRe;
+			zRe = zRe * zRe - zIm * zIm + pRe;
+			zIm = -2 * zReTemp * zIm + pIm;
 			n++;
 		}
 		return ((smooth && n < iterations) ? n + 1 - log2(log(zRe * zRe + zIm * zIm) / 2) : (double) n) / iterations;

@@ -31,7 +31,7 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="QLabel" name="imageLabel">
+     <widget class="InteractiveLabel" name="image">
       <property name="minimumSize">
        <size>
         <width>800</width>
@@ -57,35 +57,22 @@
       <property name="bottomMargin">
        <number>6</number>
       </property>
-      <item row="2" column="0" colspan="2">
-       <widget class="Line" name="line1">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="fractalLabel">
-        <property name="text">
-         <string>Fractal:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QDoubleSpinBox" name="centerReSpin">
-        <property name="decimals">
-         <number>10</number>
-        </property>
-        <property name="minimum">
-         <double>-5.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>5.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>-0.750000000000000</double>
-        </property>
-       </widget>
+      <item row="10" column="0" colspan="2">
+       <layout class="QHBoxLayout" name="progressLayout">
+        <item>
+         <widget class="QProgressBar" name="progress"/>
+        </item>
+        <item>
+         <widget class="QLCDNumber" name="lcd">
+          <property name="frameShadow">
+           <enum>QFrame::Plain</enum>
+          </property>
+          <property name="digitCount">
+           <number>5</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item row="8" column="0" colspan="2">
        <spacer name="spacer1">
@@ -100,71 +87,14 @@
         </property>
        </spacer>
       </item>
-      <item row="5" column="1">
-       <widget class="QDoubleSpinBox" name="zoomSpin">
-        <property name="minimum">
-         <double>0.100000000000000</double>
+      <item row="7" column="0" colspan="2">
+       <widget class="QPushButton" name="generate">
+        <property name="text">
+         <string>Generate</string>
         </property>
-        <property name="maximum">
-         <double>10000000000.000000000000000</double>
+        <property name="shortcut">
+         <string>Return</string>
         </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-        <property name="value">
-         <double>1.250000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="QDoubleSpinBox" name="centerImSpin">
-        <property name="decimals">
-         <number>10</number>
-        </property>
-        <property name="minimum">
-         <double>-5.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>5.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="fractalCombo">
-        <property name="minimumSize">
-         <size>
-          <width>150</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="currentIndex">
-         <number>2</number>
-        </property>
-        <item>
-         <property name="text">
-          <string>Burning Ship Fractal</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Julia Set</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Mandelbrot Set</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Manowar Fractal</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Phoenix Fractal</string>
-         </property>
-        </item>
        </widget>
       </item>
       <item row="5" column="0">
@@ -174,16 +104,17 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="iterationsSpin">
-        <property name="minimum">
-         <number>10</number>
+      <item row="0" column="0">
+       <widget class="QLabel" name="fractalLabel">
+        <property name="text">
+         <string>Fractal:</string>
         </property>
-        <property name="maximum">
-         <number>1000</number>
-        </property>
-        <property name="value">
-         <number>100</number>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="imLabel">
+        <property name="text">
+         <string>Center Im:</string>
         </property>
        </widget>
       </item>
@@ -194,24 +125,10 @@
         </property>
        </widget>
       </item>
-      <item row="7" column="0" colspan="2">
-       <widget class="QPushButton" name="generateButton">
-        <property name="text">
-         <string>Generate</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="centerReLabel">
-        <property name="text">
-         <string>Center Re:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="centerImLabel">
-        <property name="text">
-         <string>Center Im:</string>
+      <item row="2" column="0" colspan="2">
+       <widget class="Line" name="line1">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </item>
@@ -222,8 +139,89 @@
         </property>
        </widget>
       </item>
-      <item row="9" column="0" colspan="2">
-       <widget class="QProgressBar" name="progressBar"/>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="fractal">
+        <property name="minimumSize">
+         <size>
+          <width>150</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="currentIndex">
+         <number>3</number>
+        </property>
+        <item>
+         <property name="text">
+          <string>Burning Ship</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Julia</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Mandelbar</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Mandelbrot</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Manowar</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Phoenix</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="reLabel">
+        <property name="text">
+         <string>Center Re:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="re">
+        <property name="text">
+         <string>-0.75</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLineEdit" name="im">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QLineEdit" name="zoom">
+        <property name="text">
+         <string>1.25</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="iterations">
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::UpDownArrows</enum>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+        <property name="value">
+         <number>100</number>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
@@ -242,21 +240,21 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="saveAsAction"/>
-    <addaction name="settingsAction"/>
-    <addaction name="quitAction"/>
+    <addaction name="render"/>
+    <addaction name="settings"/>
+    <addaction name="quit"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
-  <action name="saveAsAction">
+  <action name="render">
    <property name="text">
-    <string>Save As</string>
+    <string>Render</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Shift+S</string>
+    <string>Ctrl+R</string>
    </property>
   </action>
-  <action name="settingsAction">
+  <action name="settings">
    <property name="text">
     <string>Settings</string>
    </property>
@@ -264,7 +262,7 @@
     <string>Ctrl+Alt+S</string>
    </property>
   </action>
-  <action name="quitAction">
+  <action name="quit">
    <property name="text">
     <string>Quit</string>
    </property>
@@ -273,39 +271,71 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>InteractiveLabel</class>
+   <extends>QLabel</extends>
+   <header>../../../Headers/InteractiveLabel.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>fractal</tabstop>
+  <tabstop>generate</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
-   <sender>iterationsSpin</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>generateButton</receiver>
-   <slot>click()</slot>
+   <sender>fractal</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>reset()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>910</x>
-     <y>72</y>
+     <x>942</x>
+     <y>39</y>
     </hint>
     <hint type="destinationlabel">
-     <x>919</x>
-     <y>221</y>
+     <x>801</x>
+     <y>-1</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>zoomSpin</sender>
-   <signal>editingFinished()</signal>
-   <receiver>generateButton</receiver>
-   <slot>click()</slot>
+   <sender>generate</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>display()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>946</x>
-     <y>178</y>
+     <x>869</x>
+     <y>214</y>
     </hint>
     <hint type="destinationlabel">
-     <x>955</x>
-     <y>221</y>
+     <x>856</x>
+     <y>-13</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>render</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>render()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>528</x>
+     <y>310</y>
     </hint>
    </hints>
   </connection>
  </connections>
+ <slots>
+  <slot>reset()</slot>
+  <slot>display()</slot>
+  <slot>render()</slot>
+ </slots>
 </ui>

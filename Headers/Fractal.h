@@ -8,10 +8,10 @@ class Fractal : public QObject {
 	Q_OBJECT
 public:
     explicit Fractal(std::function<double(double, double)> *function);
-    ~Fractal();
-	void paint(cv::Mat canvas, double re, double im, double zoom);
+	void paint(cv::Mat3b canvas, double re, double im, double zoom);
     static Fractal BurningShip(int iterations, int escape, bool smooth);
 	static Fractal Julia(int iterations, int escape, bool smooth, double cRe, double cIm);
+	static Fractal Mandelbar(int iterations, int escape, bool smooth);
 	static Fractal Mandelbrot(int iterations, int escape, bool smooth);
 	static Fractal Manowar(int iterations, int escape, bool smooth);
 	static Fractal Phoenix(int iterations, int escape, bool smooth, double cRe, double cIm);
