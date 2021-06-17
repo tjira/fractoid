@@ -1,4 +1,4 @@
-#include "../Headers/SettingsWindow.h"
+#include "SettingsWindow.h"
 
 SettingsWindow::SettingsWindow(QWidget *parent)
 : QDialog(parent) {

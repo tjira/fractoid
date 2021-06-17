@@ -1,4 +1,4 @@
-#include "../Headers/Fractal.h"
+#include "Fractal.h"
 
 Fractal::Fractal(std::function<double(double, double)> *function) {
 	this->function = *function;

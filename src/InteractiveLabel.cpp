@@ -1,6 +1,4 @@
-#include "../Headers/InteractiveLabel.h"
-
-#include <QDebug>
+#include "InteractiveLabel.h"
 
 InteractiveLabel::InteractiveLabel(QWidget *parent, Qt::WindowFlags f) : QLabel(parent) {
 

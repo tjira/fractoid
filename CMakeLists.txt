@@ -7,19 +7,21 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOUIC_SEARCH_PATHS Forms)
 
+include_directories(include)
+
 find_package(OpenCV REQUIRED)
 find_package(Qt5 REQUIRED Widgets)
 
 add_executable(fractoid
-        Sources/main.cpp
-        Headers/Fractal.h
-        Headers/MainWindow.h
-        Headers/SettingsWindow.h
-        Sources/Fractal.cpp
-        Sources/MainWindow.cpp
-        Sources/SettingsWindow.cpp
-        Sources/InteractiveLabel.cpp
-        Headers/InteractiveLabel.h
+        src/main.cpp
+        include/Fractal.h
+        include/MainWindow.h
+        include/SettingsWindow.h
+        src/Fractal.cpp
+        src/MainWindow.cpp
+        src/SettingsWindow.cpp
+        src/InteractiveLabel.cpp
+        include/InteractiveLabel.h
 )
 
 target_link_libraries(fractoid ${OpenCV_LIBS} Qt5::Widgets)

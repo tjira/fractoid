@@ -1,4 +1,4 @@
-#include "../Headers/MainWindow.h"
+#include "MainWindow.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 	ui->setupUi(this);
@@ -6,14 +6,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 	connect(ui->quit, &QAction::triggered, this, &QGuiApplication::quit);
 	connect(ui->image, &InteractiveLabel::dragged, this, &MainWindow::move);
 	connect(ui->image, &InteractiveLabel::doubleClicked, this, &MainWindow::zoom);
-	auto *validator = new QDoubleValidator();
-	ui->re->setValidator(validator);
-	ui->im->setValidator(validator);
-	ui->zoom->setValidator(validator);
-	settings->ui->juliaComplexRe->setValidator(validator);
-	settings->ui->juliaComplexIm->setValidator(validator);
-	settings->ui->phoenixComplexRe->setValidator(validator);
-	settings->ui->phoenixComplexIm->setValidator(validator);
+	ui->re->setValidator(new QDoubleValidator());
+	ui->im->setValidator(new QDoubleValidator());
+	ui->zoom->setValidator(new QDoubleValidator());
+	settings->ui->juliaComplexRe->setValidator(new QDoubleValidator());
+	settings->ui->juliaComplexIm->setValidator(new QDoubleValidator());
+	settings->ui->phoenixComplexRe->setValidator(new QDoubleValidator());
+	settings->ui->phoenixComplexIm->setValidator(new QDoubleValidator());
 	display();
 }
 

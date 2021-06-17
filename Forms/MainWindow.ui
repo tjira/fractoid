@@ -282,7 +282,7 @@
   <customwidget>
    <class>InteractiveLabel</class>
    <extends>QLabel</extends>
-   <header>../../../Headers/InteractiveLabel.h</header>
+   <header>InteractiveLabel.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
