@@ -1,0 +1,9 @@
+.cache/
+.clangd/
+.makefile/
+.vscode/
+compile_commands.json
+fractoid
+*.exe
+*.o
+*.png

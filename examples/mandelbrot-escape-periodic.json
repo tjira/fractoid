@@ -1,0 +1,19 @@
+{
+    "fractal" : {
+        "name" : "mandelbrot"
+    },
+    "center" : [ -0.75, 0 ],
+    "zoom" : 1.1,
+    "algorithm" : {
+        "name" : "escape",
+        "iterations" : 80,
+        "bailout" : 10,
+        "smooth" : true
+    },
+    "color" : {
+        "name" : "periodic",
+        "amplitude" : [ 8, 32 ],
+        "phase" : [ 0, 6.28 ],
+        "seed" : [ 1, 1 ]
+    }
+}
