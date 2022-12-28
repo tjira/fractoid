@@ -9,8 +9,54 @@
 #define OUTPUT "fractal.png"
 #define RESOLUTION 1280, 720
 
+json density = R"({
+    "iterations" : 80,
+    "bailout" : 10,
+    "samples" : 1000000,
+    "seed" : 1
+})"_json;
+
+json escape = R"({
+    "iterations" : 80,
+    "bailout" : 10,
+    "smooth" : true
+})"_json;
+
+json orbitrap = R"({
+    "iterations" : 80,
+    "bailout" : 10,
+    "trap" : 5,
+    "fill" : false
+})"_json;
+
+json periodic = R"({
+    "amplitude" : [ 8, 32 ],
+    "phase" : [ 0, 6.28 ],
+    "seed" : [ 1, 1 ]
+})"_json;
+
+json linear = R"({
+    "from" : [ 0, 0, 0 ],
+    "to" : [ 255, 255, 255 ]
+})"_json;
+
+json solid = R"({
+    "rgb" : [ 255, 255, 255 ]
+})"_json;
+
 namespace std {
     template<typename T> void from_json(const json &j, std::complex<T>& c) { c.real(j.at(0)), c.imag(j.at(1)); };
+}
+
+json patch(json input) {
+    std::string algorithm = input.at("algorithm").at("name"), color = input.at("color").at("name");
+    if (algorithm == "density") density.merge_patch(input.at("algorithm")), input.at("algorithm") = density;
+    if (algorithm == "escape") escape.merge_patch(input.at("algorithm")), input.at("algorithm") = escape;
+    if (algorithm == "orbitrap") orbitrap.merge_patch(input.at("algorithm")), input.at("algorithm") = orbitrap;
+    if (color == "linear") linear.merge_patch(input.at("color")), input.at("color") = linear;
+    if (color == "periodic") periodic.merge_patch(input.at("color")), input.at("color") = periodic;
+    if (color == "solid") solid.merge_patch(input.at("color")), input.at("color") = solid;
+    return input;
 }
 
 template<class F, class A, class C>
@@ -71,7 +117,7 @@ int main(int argc, char** argv) {
         throw std::runtime_error(std::string("File '") + program.get<std::string>("-f") + std::string("' does not exist."));
     }
 
-    json input = json::parse(std::ifstream(program.get<std::string>("-f")));
+    json input = patch(json::parse(std::ifstream(program.get<std::string>("-f"))));
 
     Timer timer(true); Image image = run(input);
     if (!program.get<bool>("-q")) std::cout << "Fractal generation took " << timer.elapsed() << " ms." << std::endl;
