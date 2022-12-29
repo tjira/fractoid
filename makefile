@@ -25,5 +25,11 @@ uniform.o: src/uniform.cpp
 
 # Miscellaneous ========================================================================================================
 
+CLEAN = compile_commands.json fractoid .cache .clangd .makefile .vscode *.exe *.o *.png
+
 clean:
-	rm -rf compile_commands.json fractoid .cache .clangd .makefile .vscode *.exe *.o *.png
+ifeq ($(OS),Windows_NT)
+	del /s $(CLEAN) > nul 2>&1
+else
+	rm -rf $(CLEAN)
+endif
