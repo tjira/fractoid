@@ -25,7 +25,7 @@ uniform.o: src/uniform.cpp
 
 # Miscellaneous ========================================================================================================
 
-CLEAN = compile_commands.json fractal.json fractoid .cache .clangd .makefile .vscode *.exe *.o *.png
+CLEAN = compile_commands.json fractal.json fractoid Session.vim .cache .clangd .makefile .vscode *.exe *.o *.png
 
 clean:
 ifeq ($(OS),Windows_NT)

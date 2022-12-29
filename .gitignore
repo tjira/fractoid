@@ -5,6 +5,7 @@
 compile_commands.json
 fractal.json
 fractoid
+Session.vim
 *.exe
 *.o
 *.png
