@@ -4,6 +4,8 @@ ifeq ($(OS),Windows_NT)
 	FLAGS += -static-libstdc++ -static-libgcc
 endif
 
+all: fractoid
+
 # Link =================================================================================================================
 
 fractoid: fractoid.o image.o timer.o uniform.o
@@ -25,11 +27,5 @@ uniform.o: src/uniform.cpp
 
 # Miscellaneous ========================================================================================================
 
-CLEAN = compile_commands.json fractal.json fractoid Session.vim .cache .clangd .makefile .vscode *.exe *.o *.png
-
 clean:
-ifeq ($(OS),Windows_NT)
-	del /s $(CLEAN) > nul 2>&1
-else
-	rm -rf $(CLEAN)
-endif
+	rm -rf compile_commands.json fractal.json fractoid Session.vim .cache .clangd .makefile .vscode *.exe *.o *.png
