@@ -50,24 +50,24 @@ Image Painter<F, A, C>::paint(std::complex<double> center, double zoom) const {
 
 template <class F, class A, class C> template <typename T>
 std::tuple<std::complex<double>, T> Painter<F, A, C>::loop(std::complex<double> p) const {
-    using namespace Algorithm; using namespace Fractal; std::complex<double> z, zp, tmp;
-    if constexpr (std::is_same<A, Escape>()) {
+    std::complex<double> z, zp, tmp;
+    if constexpr (std::is_same<A, Algorithm::Escape>()) {
         double value = alg.iterations;
-        if constexpr (std::is_same<F, BurningShip>()) { BURNINGSHIP(ESCAPE) }
-        if constexpr (std::is_same<F, Buffalo>()) { BUFFALO(ESCAPE) }
-        if constexpr (std::is_same<F, Julia>()) { JULIA(ESCAPE) }
-        if constexpr (std::is_same<F, Mandelbrot>()) { MANDELBROT(ESCAPE) }
-        if constexpr (std::is_same<F, Manowar>()) { MANOWAR(ESCAPE) }
-        if constexpr (std::is_same<F, Phoenix>()) { PHOENIX(ESCAPE) }
+        if constexpr (std::is_same<F, Fractal::BurningShip>()) { BURNINGSHIP(ESCAPE) }
+        if constexpr (std::is_same<F, Fractal::Buffalo>()) { BUFFALO(ESCAPE) }
+        if constexpr (std::is_same<F, Fractal::Julia>()) { JULIA(ESCAPE) }
+        if constexpr (std::is_same<F, Fractal::Mandelbrot>()) { MANDELBROT(ESCAPE) }
+        if constexpr (std::is_same<F, Fractal::Manowar>()) { MANOWAR(ESCAPE) }
+        if constexpr (std::is_same<F, Fractal::Phoenix>()) { PHOENIX(ESCAPE) }
         return { z, value };
     } else {
         std::vector<std::complex<double>> orbit;
-        if constexpr (std::is_same<F, Buffalo>()) { BUFFALO(ORBIT) }
-        if constexpr (std::is_same<F, BurningShip>()) { BURNINGSHIP(ORBIT) }
-        if constexpr (std::is_same<F, Julia>()) { JULIA(ORBIT) }
-        if constexpr (std::is_same<F, Mandelbrot>()) { MANDELBROT(ORBIT) }
-        if constexpr (std::is_same<F, Manowar>()) { MANOWAR(ORBIT) }
-        if constexpr (std::is_same<F, Phoenix>()) { PHOENIX(ORBIT) }
+        if constexpr (std::is_same<F, Fractal::Buffalo>()) { BUFFALO(ORBIT) }
+        if constexpr (std::is_same<F, Fractal::BurningShip>()) { BURNINGSHIP(ORBIT) }
+        if constexpr (std::is_same<F, Fractal::Julia>()) { JULIA(ORBIT) }
+        if constexpr (std::is_same<F, Fractal::Mandelbrot>()) { MANDELBROT(ORBIT) }
+        if constexpr (std::is_same<F, Fractal::Manowar>()) { MANOWAR(ORBIT) }
+        if constexpr (std::is_same<F, Fractal::Phoenix>()) { PHOENIX(ORBIT) }
         return { z, orbit };
     }
 }
@@ -123,7 +123,7 @@ void Painter<F, A, C>::orbitrap(Image& image, std::complex<double> center, doubl
             auto [z, orbit] = loop<std::vector<std::complex<double>>>({ re, im });
             if (double value = 1e10, distance = 0; !alg.fill || std::norm(z) > alg.bailout * alg.bailout) {
                 for (std::complex<double> p : orbit) {
-                    if (distance = alg.distance(p); distance < value) value = distance;
+                    if (distance = DISTANCE(p); distance < value) value = distance;
                 }
                 if constexpr (std::is_same<C, Color::Periodic>()) value = 0.03 * std::log(value);
                 if constexpr (std::is_same<C, Color::Linear>()) value = 1 / (1 + 5 * value);

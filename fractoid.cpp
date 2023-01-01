@@ -24,7 +24,7 @@ json escape = R"({
 
 json orbitrap = R"({
     "iterations" : 80,
-    "bailout" : 10,
+    "bailout" : 100,
     "trap" : 5,
     "fill" : false
 })"_json;
