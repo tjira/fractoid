@@ -4,8 +4,6 @@
 #include "image.h"
 #include "uniform.h"
 
-using json = nlohmann::json;
-
 struct Options {
     std::array<uchar, 3> background;
     std::array<int, 2> resolution;

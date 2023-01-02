@@ -1,3 +1,5 @@
+#include "include/color.h"
+#include "include/defaults.h"
 #include "include/canvas.h"
 #include "include/gui.h"
 #include "include/shader.h"
@@ -5,8 +7,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 
-#define WIDTH 1024
-#define HEIGHT 576
+#define WIDTH 1280
+#define HEIGHT 720
 
 std::string vertex = R"(
 #version 420 core
