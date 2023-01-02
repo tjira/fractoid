@@ -13,7 +13,7 @@ all: fractoid fractoid-gl
 fractoid: fractoid.o image.o timer.o uniform.o
 	g++ $(FLAGS) -o $@ $^
 
-fractoid-gl: fractoid-gl.o buffer.o canvas.o gui.o shader.o glad.o imgui.o imgui_demo.o imgui_dilog.o imgui_draw.o imgui_glfw.o imgui_opengl.o imgui_tables.o imgui_widgets.o
+fractoid-gl: fractoid-gl.o buffer.o canvas.o gui.o shader.o uniform.o glad.o imgui.o imgui_demo.o imgui_dilog.o imgui_draw.o imgui_glfw.o imgui_opengl.o imgui_tables.o imgui_widgets.o
 	g++ $(FLAGS) -o $@ $^ $(OPENGL)
 
 fractoid.o: fractoid.cpp

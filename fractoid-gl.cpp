@@ -3,6 +3,7 @@
 #include "include/canvas.h"
 #include "include/gui.h"
 #include "include/shader.h"
+#include "include/uniform.h"
 #include "lib/argparse/argparse.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
@@ -20,6 +21,11 @@ void main() {
 
 std::string fragment = R"(
 #version 420 core
+
+struct Periodic { float r1, g1, b1, r2, g2, b2; };
+
+uniform Periodic periodic;
+
 uniform int width, height, iters;
 uniform float bail, zoom, x, y;
 out vec4 o_color;
@@ -30,7 +36,7 @@ float mandelbrot(float re, float im) {
         float temp = zRe * zRe - zIm * zIm + re;
         zIm = 2 * zRe * zIm + im; zRe = temp;
         if(zRe * zRe + zIm * zIm > bail * bail) {
-            return n - log2(0.5 * log(sqrt(zRe * zRe + zIm * zIm)));
+            return n - log2(0.5 * log(zRe * zRe + zIm * zIm));
         }
     }
     return iters;
@@ -41,7 +47,10 @@ void main() {
     float re = x + (3.0 * (gl_FragCoord.x + 0.5) - 1.5 * width) / zoom / height;
     float value = mandelbrot(re, im);
     if (value < iters) {
-        o_color = vec4(value / 255.0f, value / 255.0f, value / 255.0f, 1.0f);
+        float r = (sin(periodic.r1 * value / iters + periodic.r2) + 1) / 2;
+        float g = (sin(periodic.g1 * value / iters + periodic.g2) + 1) / 2;
+        float b = (sin(periodic.b1 * value / iters + periodic.b2) + 1) / 2;
+        o_color = vec4(r, g, b, 1.0f);
     } else {
         o_color = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     }
@@ -122,6 +131,14 @@ int main(int argc, char** argv) {
         Canvas canvas(WIDTH, HEIGHT);
         Gui gui(window);
 
+        // Create periodic coloring struct
+        Uniform a(Defaults::periodic.at("amplitude"), Defaults::periodic.at("seed").at(0));
+        Uniform p(Defaults::periodic.at("phase"), Defaults::periodic.at("seed").at(1));
+        Color::Periodic periodic {
+            .r1 = a.get(), .g1 = a.get(), .b1 = a.get(),
+            .r2 = p.get(), .g2 = p.get(), .b2 = p.get()
+        };
+
         // Enter the render loop
         while (!glfwWindowShouldClose(window)) {
 
@@ -134,12 +151,20 @@ int main(int argc, char** argv) {
             // Set variables to shader
             shader.set("u_proj", pointer.camera.proj);
             shader.set("iters", 80);
-            shader.set("bail", 5.0f);
+            shader.set("bail", 10.0f);
             shader.set("zoom", 1.2f);
             shader.set("x", -0.75f);
             shader.set("y", 0.0f);
             shader.set("width", pointer.width);
             shader.set("height", pointer.height);
+
+            // Set periodic coloring variables to shader
+            shader.set("periodic.r1", periodic.r1);
+            shader.set("periodic.g1", periodic.g1);
+            shader.set("periodic.b1", periodic.b1);
+            shader.set("periodic.r2", periodic.r2);
+            shader.set("periodic.g2", periodic.g2);
+            shader.set("periodic.b2", periodic.b2);
 
             // Render canvas and GUI
             canvas.render(shader);

@@ -22,6 +22,7 @@ private:
 template <typename T>
 void Shader::set(const std::string& name, T value) const {
     if constexpr (std::is_same<T, int>()) glUniform1i(glGetUniformLocation(id, name.c_str()), value);
+    if constexpr (std::is_same<T, double>()) glUniform1f(glGetUniformLocation(id, name.c_str()), value);
     if constexpr (std::is_same<T, float>()) glUniform1f(glGetUniformLocation(id, name.c_str()), value);
     if constexpr (std::is_same<T, glm::vec3>()) glUniform3f(glGetUniformLocation(id, name.c_str()), value[0], value[1], value[2]);
     if constexpr (std::is_same<T, glm::vec4>()) glUniform4f(glGetUniformLocation(id, name.c_str()), value[0], value[1], value[2], value[3]);
