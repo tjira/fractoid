@@ -7,6 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <GLFW/glfw3.h>
 
+class Shader;
 class Gui;
 
 struct GLFWPointer {
@@ -23,6 +24,7 @@ struct GLFWPointer {
         std::complex<double> center;
         double zoom;
     } settings;
+    Shader* shader;
     Gui* gui;
 };
 
