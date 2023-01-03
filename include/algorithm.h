@@ -18,17 +18,19 @@
     alg.trap == 5 ? ORBITRAP_TRAP_5(P) : 0
 
 namespace Algorithm {
-    struct Density {
-        int iterations; double bailout; int samples; long seed;
+    template<typename T>struct Density {
+        int iterations; T bailout; int samples; long seed;
     };
-    struct Escape {
-        int iterations; double bailout; bool smooth;
+    template<typename T> struct Escape {
+        int iterations; T bailout; bool smooth;
     };
-    struct Orbitrap {
-        double distance(std::complex<double> p) const;
-        int iterations; double bailout; int trap; bool fill;
+    template<typename T> struct Orbitrap {
+        int iterations; T bailout; int trap; bool fill;
     };
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Density, iterations, bailout, samples, seed)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Escape, iterations, bailout, smooth)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Orbitrap, iterations, bailout, trap, fill)
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Density<double>, iterations, bailout, samples, seed)
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Density<float>, iterations, bailout, samples, seed)
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Escape<double>, iterations, bailout, smooth)
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Escape<float>, iterations, bailout, smooth)
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Orbitrap<double>, iterations, bailout, trap, fill)
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Orbitrap<float>, iterations, bailout, trap, fill)
 };

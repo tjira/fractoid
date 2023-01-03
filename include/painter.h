@@ -30,7 +30,7 @@ private:
 template <class F, class A, class C>
 Painter<F, A, C>::Painter(const F& fractal, const A& alg, const C& col, const Options& options) : options(options) {
     this->alg = alg, this->col = col, this->fractal = fractal;
-    if constexpr (std::is_same<C, Color::Periodic>()) {
+    if constexpr (std::is_same<C, Color::Periodic<double>>()) {
         Uniform a(col.amplitude, col.seed.at(0)), p(col.phase, col.seed.at(1));
         this->col.r1 = a.get(), this->col.g1 = a.get(), this->col.b1 = a.get();
         this->col.r2 = p.get(), this->col.g2 = p.get(), this->col.b2 = p.get();
@@ -40,16 +40,16 @@ Painter<F, A, C>::Painter(const F& fractal, const A& alg, const C& col, const Op
 template <class F, class A, class C>
 Image Painter<F, A, C>::paint(std::complex<double> center, double zoom) const {
     Image image(options.resolution.at(0), options.resolution.at(1), options.background);
-    if constexpr (std::is_same<A, Algorithm::Density>()) density(image, center, zoom);
-    if constexpr (std::is_same<A, Algorithm::Escape>()) escape(image, center, zoom);
-    if constexpr (std::is_same<A, Algorithm::Orbitrap>()) orbitrap(image, center, zoom);
+    if constexpr (std::is_same<A, Algorithm::Density<double>>()) density(image, center, zoom);
+    if constexpr (std::is_same<A, Algorithm::Escape<double>>()) escape(image, center, zoom);
+    if constexpr (std::is_same<A, Algorithm::Orbitrap<double>>()) orbitrap(image, center, zoom);
     return image;
 }
 
 template <class F, class A, class C> template <typename T>
 std::tuple<std::complex<double>, T> Painter<F, A, C>::loop(std::complex<double> p) const {
     std::complex<double> z, zp, tmp;
-    if constexpr (std::is_same<A, Algorithm::Escape>()) {
+    if constexpr (std::is_same<A, Algorithm::Escape<double>>()) {
         double value = alg.iterations;
         if constexpr (std::is_same<F, Fractal::BurningShip>()) { BURNINGSHIP(ESCAPE) }
         if constexpr (std::is_same<F, Fractal::Buffalo>()) { BUFFALO(ESCAPE) }
@@ -123,7 +123,7 @@ void Painter<F, A, C>::orbitrap(Image& image, std::complex<double> center, doubl
                 for (std::complex<double> p : orbit) {
                     if (distance = DISTANCE(p); distance < value) value = distance;
                 }
-                if constexpr (std::is_same<C, Color::Periodic>()) value = 0.03 * std::log(value);
+                if constexpr (std::is_same<C, Color::Periodic<double>>()) value = 0.03 * std::log(value);
                 if constexpr (std::is_same<C, Color::Linear>()) value = 1 / (1 + 5 * value);
                 image(i, j) = col.get(value);
             }
