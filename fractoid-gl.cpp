@@ -7,9 +7,6 @@
 #include <iostream>
 #include <fstream>
 
-#define WIDTH 1280
-#define HEIGHT 720
-
 std::string vertex = R"(
 #version 420 core
 layout (location = 0) in vec3 i_position;
@@ -108,7 +105,7 @@ int main(int argc, char** argv) {
     json input = Defaults::patch(json::parse(std::ifstream(program.get<std::string>("-f"))));
 
     // Create GLFW variable struct and a window pointer
-    GLFWPointer pointer { .width = WIDTH, .height = HEIGHT };
+    GLFWPointer pointer { .width = std::vector<int>{RESOLUTION}[0], .height = std::vector<int>{RESOLUTION}[1] };
     GLFWwindow* window;
 
     // Initialize GLFW and throw error if failed
@@ -146,9 +143,9 @@ int main(int argc, char** argv) {
     
     {
         // Create canvas, shader and GUI
+        Canvas canvas(pointer.width, pointer.height);
         Gui gui(window); pointer.gui = &gui;
         Shader shader(vertex, fragment);
-        Canvas canvas(WIDTH, HEIGHT);
 
         // Create periodic coloring struct
         Uniform a(input.at("color").at("amplitude"), input.at("color").at("seed").at(0));
