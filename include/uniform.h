@@ -15,3 +15,4 @@ private:
 	std::mt19937 generator;
 	long seed;
 };
+

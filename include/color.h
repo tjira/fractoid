@@ -15,15 +15,15 @@ namespace Color {
     };
 
     // Periodic coloring
-    template<typename T> struct Periodic {
+    struct Periodic {
         std::tuple<uchar, uchar, uchar> get(double v) const {
             uchar r = (std::sin(r1 * v + r2) + 1) * 127.5;
             uchar g = (std::sin(g1 * v + g2) + 1) * 127.5;
             uchar b = (std::sin(b1 * v + b2) + 1) * 127.5;
             return { r , g, b };
         };
-        std::array<T, 2> amplitude, phase;
-        T r1, g1, b1, r2, g2, b2;
+        std::array<double, 2> amplitude, phase;
+        double r1, g1, b1, r2, g2, b2;
         std::array<long, 2> seed;
     };
 
@@ -37,7 +37,6 @@ namespace Color {
 
     // Define json loaders
     NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Linear, from, to)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Periodic<double>, amplitude, phase, seed)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Periodic<float>, amplitude, phase, seed)
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Periodic, amplitude, phase, seed)
     NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Solid, rgb)
 };

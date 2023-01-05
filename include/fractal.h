@@ -17,8 +17,8 @@
 #define PHOENIX(ALG) z = p, zp = fractal.c; ALG(PHOENIXF)
 
 namespace Fractal {
-    struct Julia { std::complex<double> c; };
-    struct Phoenix { std::complex<double> c; };
+    struct Julia { std::complex<double> c{ 0, 1 }; };
+    struct Phoenix { std::complex<double> c{ 0, 0 }; };
     struct Buffalo {};
     struct BurningShip {};
     struct Mandelbrot {};

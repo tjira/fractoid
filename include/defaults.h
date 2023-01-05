@@ -48,15 +48,4 @@ namespace Defaults {
     static json solid = R"({
         "rgb" : [ 255, 255, 255 ]
     })"_json;
-
-    static json patch(json input) {
-        std::string algorithm = input.at("algorithm").at("name"), color = input.at("color").at("name");
-        if (algorithm == "density") Defaults::density.merge_patch(input.at("algorithm")), input.at("algorithm") = Defaults::density;
-        if (algorithm == "escape") Defaults::escape.merge_patch(input.at("algorithm")), input.at("algorithm") = Defaults::escape;
-        if (algorithm == "orbitrap") Defaults::orbitrap.merge_patch(input.at("algorithm")), input.at("algorithm") = Defaults::orbitrap;
-        if (color == "linear") Defaults::linear.merge_patch(input.at("color")), input.at("color") = Defaults::linear;
-        if (color == "periodic") Defaults::periodic.merge_patch(input.at("color")), input.at("color") = Defaults::periodic;
-        if (color == "solid") Defaults::solid.merge_patch(input.at("color")), input.at("color") = Defaults::solid;
-        return input;
-    }
 }

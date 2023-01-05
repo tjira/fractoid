@@ -6,6 +6,17 @@
 #include "lib/argparse/argparse.hpp"
 #include <filesystem>
 
+json patch(json input) {
+    std::string algorithm = input.at("algorithm").at("name"), color = input.at("color").at("name");
+    if (algorithm == "density") Defaults::density.merge_patch(input.at("algorithm")), input.at("algorithm") = Defaults::density;
+    if (algorithm == "escape") Defaults::escape.merge_patch(input.at("algorithm")), input.at("algorithm") = Defaults::escape;
+    if (algorithm == "orbitrap") Defaults::orbitrap.merge_patch(input.at("algorithm")), input.at("algorithm") = Defaults::orbitrap;
+    if (color == "linear") Defaults::linear.merge_patch(input.at("color")), input.at("color") = Defaults::linear;
+    if (color == "periodic") Defaults::periodic.merge_patch(input.at("color")), input.at("color") = Defaults::periodic;
+    if (color == "solid") Defaults::solid.merge_patch(input.at("color")), input.at("color") = Defaults::solid;
+    return input;
+}
+
 template<class F, class A, class C>
 Image run(const json& input, const F& fractal, const A& alg, const C& col) {
     std::array<uchar, 3> background = input.value("background", std::array<uchar, 3>{ BACKGROUND });
@@ -18,7 +29,7 @@ template<class F, class A>
 Image run(const json& input, const F& fractal, const A& alg) {
     using namespace Color;
     if (input.at("color").at("name") == "linear") return run(input, fractal, alg, input.at("color").get<Linear>());
-    else if (input.at("color").at("name") == "periodic") return run(input, fractal, alg, input.at("color").get<Periodic<double>>());
+    else if (input.at("color").at("name") == "periodic") return run(input, fractal, alg, input.at("color").get<Periodic>());
     else if (input.at("color").at("name") == "solid") return run(input, fractal, alg, input.at("color").get<Solid>());
     else throw std::runtime_error("color name '" + std::string(input.at("color").at("name")) + "' not found.");
 }
@@ -26,9 +37,9 @@ Image run(const json& input, const F& fractal, const A& alg) {
 template<class F>
 Image run(const json& input, const F& fractal) {
     using namespace Algorithm; std::string name = input.at("algorithm").at("name");
-    if (name == "density") return run(input, fractal, input.at("algorithm").get<Density<double>>());
-    else if (name == "escape") return run(input, fractal, input.at("algorithm").get<Escape<double>>());
-    else if (name == "orbitrap") return run(input, fractal, input.at("algorithm").get<Orbitrap<double>>());
+    if (name == "density") return run(input, fractal, input.at("algorithm").get<Density>());
+    else if (name == "escape") return run(input, fractal, input.at("algorithm").get<Escape>());
+    else if (name == "orbitrap") return run(input, fractal, input.at("algorithm").get<Orbitrap>());
     else throw std::runtime_error("Fractal name '" + name + "' not found.");
 }
 
@@ -64,7 +75,7 @@ int main(int argc, char** argv) {
         throw std::runtime_error(std::string("File '") + program.get<std::string>("-f") + std::string("' does not exist."));
     }
 
-    json input = Defaults::patch(json::parse(std::ifstream(program.get<std::string>("-f"))));
+    json input = patch(json::parse(std::ifstream(program.get<std::string>("-f"))));
 
     Timer timer(true); Image image = run(input);
     if (!program.get<bool>("-q")) std::cout << "Fractal generation took " << timer.elapsed() << " ms." << std::endl;
