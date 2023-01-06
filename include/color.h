@@ -1,8 +1,11 @@
+#pragma once
+
 #include "../lib/json/json.hpp"
 
 typedef unsigned char uchar;
 
 namespace Color {
+
     // Linear coloring
     struct Linear {
         std::tuple<uchar, uchar, uchar> get(double v) const {
@@ -12,6 +15,14 @@ namespace Color {
             return { r, g, b };
         };
         std::array<int, 3> from, to;
+        inline static std::string code = R"(
+            vec4 colorize(float value) {
+                float r = (col.from.x + value * (col.to.x - col.from.x)) / 255.0f;
+                float g = (col.from.y + value * (col.to.y - col.from.y)) / 255.0f;
+                float b = (col.from.z + value * (col.to.z - col.from.z)) / 255.0f;
+                return vec4(r, g, b, 1.0f);
+            }
+        )";
     };
 
     // Periodic coloring
@@ -25,6 +36,14 @@ namespace Color {
         std::array<double, 2> amplitude, phase;
         double r1, g1, b1, r2, g2, b2;
         std::array<long, 2> seed;
+        inline static std::string code = R"(
+            vec4 colorize(float value) {
+                float r = (sin(col.r1 * value + col.r2) + 1.0f) / 2.0f;
+                float g = (sin(col.g1 * value + col.g2) + 1.0f) / 2.0f;
+                float b = (sin(col.b1 * value + col.b2) + 1.0f) / 2.0f;
+                return vec4(r, g, b, 1.0f);
+            }
+        )";
     };
 
     // Solid coloring
@@ -33,6 +52,11 @@ namespace Color {
             return { (uchar)rgb.at(0), (uchar)rgb.at(1), (uchar)rgb.at(2) };
         }
         std::array<int, 3> rgb;
+        inline static std::string code = R"(
+            vec4 colorize(float value) {
+                return vec4(col.rgb / 255.0f, 1.0f);
+            }
+        )";
     };
 
     // Define json loaders

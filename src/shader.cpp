@@ -1,89 +1,19 @@
 #include "../include/shader.h"
-#include <include/fractal.h>
+#include <include/algorithm.h>
 
 std::string generateFractalShader(std::string fractal, std::string algorithm, std::string color) {
-    std::string uniforms = "uniform Fractal fractal;uniform Algorithm alg;uniform Color col;uniform float re,im,zoom;uniform int width,height;out vec4 o_color;";
-    std::string escapeStruct = "struct Algorithm {int iters;float bail;bool smoothing;};";
-    std::string orbitrapStruct = "struct Algorithm {int iters, trap;float bail;bool fill;};";
-    std::string linearStruct = "struct Color {vec3 from,to;};";
-    std::string periodicStruct = "struct Color {float r1,g1,b1,r2,g2,b2;};";
-    std::string solidStruct = "struct Color {vec3 rgb;};";
-
-    std::string additional = R"(
-        float norm(float re, float im) { 
-            return re * re + im * im;
-        }
-    )";
-    
-    std::function<std::string(std::string, std::string)> escapeFunc = [](std::string fractalInit, std::string fractalCode) { return R"(
-        float escape(float pRe, float pIm) {
-            )"+fractalInit+R"(
-            for(int n = 0; n < alg.iters; n++){
-                )"+fractalCode+R"(
-                if(norm(zRe, zIm) > alg.bail * alg.bail) {
-                    return n - (alg.smoothing ? log2(0.5 * log(norm(zRe, zIm))) : 0);
-                }
-            }
-            return alg.iters;
-        }
-    )";};
-    std::function<std::string(std::string, std::string)> orbitrapFunc = [](std::string fractalInit, std::string fractalCode) { return R"(
-        float orbitrap(float pRe, float pIm) {
-            )"+fractalInit+R"(float minDistance = alg.iters;
-            for(int n = 0; n < alg.iters; n++){
-                )"+fractalCode+R"(
-                if(zRe * zRe + zIm * zIm > alg.bail * alg.bail) {
-                    return minDistance;
-                }
-                float distance;
-                if (alg.trap == 1) distance = norm(zRe, zIm);
-                else if (alg.trap == 2) distance = min(abs(zRe), abs(zIm));
-                else if (alg.trap == 3) distance = 0.70710678f * min(abs(zRe - zIm), abs(zRe + zIm));
-                else if (alg.trap == 4) distance = abs(norm(zRe, zIm) - 1);
-                else if (alg.trap == 5) distance = min(norm(zRe, zIm), abs(norm(zRe, zIm) - 1));
-                if (distance < minDistance) minDistance = distance;
-            }
-            return alg.fill ? alg.iters : minDistance;
-        }
-    )";};
-    std::string linearFunc = R"(
-        vec4 colorize(float value) {
-            float r = (col.from.x + value * (col.to.x - col.from.x)) / 255.0f;
-            float g = (col.from.y + value * (col.to.y - col.from.y)) / 255.0f;
-            float b = (col.from.z + value * (col.to.z - col.from.z)) / 255.0f;
-            return vec4(r, g, b, 1.0f);
-        }
-    )";
-    std::string periodicFunc = R"(
-        vec4 colorize(float value) {
-            float r = (sin(col.r1 * value + col.r2) + 1.0f) / 2.0f;
-            float g = (sin(col.g1 * value + col.g2) + 1.0f) / 2.0f;
-            float b = (sin(col.b1 * value + col.b2) + 1.0f) / 2.0f;
-            return vec4(r, g, b, 1.0f);
-        }
-    )";
-    std::string solidFunc = R"(
-        vec4 colorize(float value) {
-            return vec4(col.rgb / 255.0f, 1.0f);
-        }
-    )";
-    std::function<std::string(std::string)> mainEscape = [](std::string normalization) { return R"(
+    std::string shader = "#version 420 core\nfloat norm(float re,float im){return re*re+im*im;}";
+    shader += "struct Fract{float cRe,cIm;};struct Alg{int iters,trap;float bail;bool fill,smoothing;};struct Col{vec3 from,to,rgb;float r1,g1,b1,r2,g2,b2;};";
+    shader += "uniform Fract fractal;uniform Alg alg;uniform Col col;uniform float re,im,zoom;uniform int width,height;out vec4 o_color;";
+    std::function<std::string(std::string)> main = [](std::string normalization) { return R"(
         void main() {
             float pIm = im - (3.0f * (gl_FragCoord.y + 0.5f) - 1.5f * height) / zoom / height;
             float pRe = re + (3.0f * (gl_FragCoord.x + 0.5f) - 1.5f * width) / zoom / height;
-            float value = escape(pRe, pIm);
+            float value = function(pRe, pIm);
             o_color = value < alg.iters ? colorize()"+normalization+R"() : vec4(0.0f, 0.0f, 0.0f, 1.0f);
         }
     )";};
-    std::function<std::string(std::string)> mainOrbitrap = [](std::string normalization) { return R"(
-        void main() {
-            float pIm = im - (3.0f * (gl_FragCoord.y + 0.5f) - 1.5f * height) / zoom / height;
-            float pRe = re + (3.0f * (gl_FragCoord.x + 0.5f) - 1.5f * width) / zoom / height;
-            float value = orbitrap(pRe, pIm);
-            o_color = value < alg.iters ? colorize()"+normalization+R"() : vec4(0.0f, 0.0f, 0.0f, 1.0f);
-        }
-    )";};
-    std::string fractalStruct = "struct Fractal{float cRe,cIm;};", fractalInit, fractalCode;
+    std::string fractalInit, fractalCode, normalization = "value/alg.iters"; std::function<std::string(std::string, std::string)> function;
     if (fractal == "buffalo") fractalInit = Fractal::Buffalo::code.init, fractalCode = Fractal::Buffalo::code.code;
     else if (fractal == "burningship") fractalInit = Fractal::BurningShip::code.init, fractalCode = Fractal::BurningShip::code.code;
     else if (fractal == "julia") fractalInit = Fractal::Julia::code.init, fractalCode = Fractal::Julia::code.code;
@@ -91,23 +21,16 @@ std::string generateFractalShader(std::string fractal, std::string algorithm, st
     else if (fractal == "manowar") fractalInit = Fractal::Manowar::code.init, fractalCode = Fractal::Manowar::code.code;
     else if (fractal == "phoenix") fractalInit = Fractal::Phoenix::code.init, fractalCode = Fractal::Phoenix::code.code;
     else throw std::runtime_error("Fractal name does not exist.");
-    if (algorithm == "escape") {
-        if (color == "linear") {
-            return "#version 420 core\n" + fractalStruct + escapeStruct + linearStruct + uniforms + additional + escapeFunc(fractalInit, fractalCode) + linearFunc + mainEscape("value / alg.iters");
-        } else if (color == "periodic") {
-            return "#version 420 core\n" + fractalStruct + escapeStruct + periodicStruct + uniforms + additional + escapeFunc(fractalInit, fractalCode) + periodicFunc + mainEscape("value / alg.iters");
-        } else if (color == "solid") {
-            return "#version 420 core\n" + fractalStruct + escapeStruct + solidStruct + uniforms + additional + escapeFunc(fractalInit, fractalCode) + solidFunc + mainEscape("value");
-        } else throw std::runtime_error("Color name does not exist.");
-    } else if (algorithm == "orbitrap") {
-        if (color == "linear") {
-            return "#version 420 core\n" + fractalStruct + orbitrapStruct + linearStruct + uniforms + additional + orbitrapFunc(fractalInit, fractalCode) + linearFunc + mainOrbitrap("1 / (1 + 5 * value)");
-        } else if (color == "periodic") {
-            return "#version 420 core\n" + fractalStruct + orbitrapStruct + periodicStruct + uniforms + additional + orbitrapFunc(fractalInit, fractalCode) + periodicFunc + mainOrbitrap("0.03 * log(value)");
-        } else if (color == "solid") {
-            return "#version 420 core\n" + fractalStruct + orbitrapStruct + solidStruct + uniforms + additional + orbitrapFunc(fractalInit, fractalCode) + solidFunc + mainOrbitrap("value");
-        } else throw std::runtime_error("Color name does not exist.");
-    } else throw std::runtime_error("Algorithm name does not exist.");
+    if (algorithm == "escape") shader += Algorithm::Escape::code(fractalInit, fractalCode);
+    else if (algorithm == "orbitrap") shader += Algorithm::Orbitrap::code(fractalInit, fractalCode);
+    else throw std::runtime_error("Algorithm name does not exist.");
+    if (color == "linear") shader += Color::Linear::code;
+    else if (color == "periodic") shader += Color::Periodic::code;
+    else if (color == "solid") shader += Color::Solid::code;
+    else throw std::runtime_error("Color name does not exist.");
+    if (algorithm == "orbitrap" && color == "linear") normalization = "1 / (1 + 5 * value)";
+    if (algorithm == "orbitrap" && color == "periodic") normalization = "0.03 * log(value)";
+    return shader + main(normalization);
 }
 
 Shader::Shader(const std::string& vertex, const std::string& fragment) : id(glCreateProgram()) {

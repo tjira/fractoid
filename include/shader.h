@@ -1,5 +1,8 @@
 #pragma once
 
+#include "../include/algorithm.h"
+#include "../include/color.h"
+#include "../include/fractal.h"
 #include "../lib/GL/gl.h"
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
