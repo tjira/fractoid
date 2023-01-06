@@ -1,3 +1,5 @@
+#pragma once
+
 #include "algorithm.h"
 #include "color.h"
 #include "fractal.h"
@@ -28,8 +30,7 @@ private:
 };
 
 template <class F, class A, class C>
-Painter<F, A, C>::Painter(const F& fractal, const A& alg, const C& col, const Options& options) : options(options) {
-    this->alg = alg, this->col = col, this->fractal = fractal;
+Painter<F, A, C>::Painter(const F& fractal, const A& alg, const C& col, const Options& options) : options(options), alg(alg), col(col), fractal(fractal) {
     if constexpr (std::is_same<C, Color::Periodic>()) {
         std::uniform_real_distribution<double> a(col.amplitude.at(0), col.amplitude.at(1));
         std::uniform_real_distribution<double> p(col.phase.at(0), col.phase.at(1));

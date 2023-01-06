@@ -1,4 +1,4 @@
-FLAGS = -std=c++17 -O3 -Wall -fopenmp
+FLAGS = -std=c++17 -fopenmp -O3 -Wall
 OPENGL = -ldl -lglfw
 
 ifeq ($(OS),Windows_NT)

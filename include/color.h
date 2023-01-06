@@ -5,8 +5,6 @@
 typedef unsigned char uchar;
 
 namespace Color {
-
-    // Linear coloring
     struct Linear {
         std::tuple<uchar, uchar, uchar> get(double v) const {
             uchar r = from.at(0) + v * (to.at(0) - from.at(0));
@@ -24,8 +22,6 @@ namespace Color {
             }
         )";
     };
-
-    // Periodic coloring
     struct Periodic {
         std::tuple<uchar, uchar, uchar> get(double v) const {
             uchar r = (std::sin(r1 * v + r2) + 1) * 127.5;
@@ -45,8 +41,6 @@ namespace Color {
             }
         )";
     };
-
-    // Solid coloring
     struct Solid {
         std::tuple<uchar, uchar, uchar> get(double) const {
             return { (uchar)rgb.at(0), (uchar)rgb.at(1), (uchar)rgb.at(2) };
@@ -58,8 +52,6 @@ namespace Color {
             }
         )";
     };
-
-    // Define json loaders
     NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Linear, from, to)
     NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Periodic, amplitude, phase, seed)
     NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Solid, rgb)

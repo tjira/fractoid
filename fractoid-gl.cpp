@@ -1,5 +1,5 @@
-#include "include/defaults.h"
 #include "include/canvas.h"
+#include "include/defaults.h"
 #include "include/gui.h"
 #include "lib/argparse/argparse.hpp"
 #include <random>
