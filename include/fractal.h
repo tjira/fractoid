@@ -1,3 +1,5 @@
+#pragma once
+
 #include <complex>
 
 #define ABS(X) ((X) < 0 ? -(X) : (X))
