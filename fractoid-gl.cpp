@@ -8,17 +8,15 @@ void keyCallback(GLFWwindow* window, int key, int, int action, int mods) {
     if (GLFWPointer* pointer = (GLFWPointer*)glfwGetWindowUserPointer(window); action == GLFW_PRESS) {
         if (key == GLFW_KEY_F1) pointer->gui->options = !pointer->gui->options; 
         else if (key == GLFW_KEY_F11) {
-            static int xpos0, ypos0, width0, height0;
-            int xpos, ypos, width, height;
+            static int xpos0, ypos0, width0, height0; int xpos, ypos, width, height;
             if (pointer->fullscreen = !pointer->fullscreen; pointer->fullscreen) {
-                glfwGetWindowSize(window, &width0, &height0);
-                glfwGetWindowPos(window, &xpos0, &ypos0);
+                glfwGetWindowSize(window, &width0, &height0); glfwGetWindowPos(window, &xpos0, &ypos0);
                 glfwGetMonitorWorkarea(glfwGetPrimaryMonitor(), &xpos, &ypos, &width, &height);
                 glfwSetWindowMonitor(window, glfwGetPrimaryMonitor(), 0, 0, width, height, GLFW_DONT_CARE);
-                glfwSwapInterval(1);
             } else {
                 glfwSetWindowMonitor(window, nullptr , xpos0, ypos0, width0, height0, GLFW_DONT_CARE);
             }
+            glfwSwapInterval(1);
         }
         else if (key == GLFW_KEY_F12) pointer->gui->fps = !pointer->gui->fps; 
     }

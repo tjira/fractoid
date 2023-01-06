@@ -1,4 +1,5 @@
 #include "../include/shader.h"
+#include <include/fractal.h>
 
 std::string generateFractalShader(std::string fractal, std::string algorithm, std::string color) {
     std::string uniforms = "uniform Fractal fractal;uniform Algorithm alg;uniform Color col;uniform float re,im,zoom;uniform int width,height;out vec4 o_color;";
@@ -7,24 +8,6 @@ std::string generateFractalShader(std::string fractal, std::string algorithm, st
     std::string linearStruct = "struct Color {vec3 from,to;};";
     std::string periodicStruct = "struct Color {float r1,g1,b1,r2,g2,b2;};";
     std::string solidStruct = "struct Color {vec3 rgb;};";
-
-    std::string buffaloInit = "float zRe = 0; float zIm = 0;";
-    std::string buffaloCode = "zRe = abs(zRe), zIm = abs(zIm); float temp = zRe * zRe - zIm * zIm - zRe + pRe; zIm = 2 * zRe * zIm -zIm + pIm; zRe = temp;";
-
-    std::string burningShipInit = "float zRe = 0; float zIm = 0;";
-    std::string burningShipCode = "zRe = abs(zRe), zIm = abs(zIm); float temp = zRe * zRe - zIm * zIm + pRe; zIm = 2 * zRe * zIm + pIm; zRe = temp;";
-
-    std::string juliaInit = "float zRe = pRe; float zIm = pIm;";
-    std::string juliaCode = "float temp = zRe * zRe - zIm * zIm + fractal.cRe; zIm = 2 * zRe * zIm + fractal.cIm; zRe = temp;";
-
-    std::string mandelbrotInit = "float zRe = 0; float zIm = 0;";
-    std::string mandelbrotCode = "float temp = zRe * zRe - zIm * zIm + pRe; zIm = 2 * zRe * zIm + pIm; zRe = temp;";
-
-    std::string manowarInit = "float zRe = pRe; float zIm = pIm, zpRe = pRe, zpIm = pIm;";
-    std::string manowarCode = "float temp = zRe * zRe - zIm * zIm + zpRe + pRe, tempzRe = zRe, tempzIm = zIm; zIm = 2 * zRe * zIm + zpIm + pIm; zRe = temp, zpRe = tempzRe, zpIm = tempzIm;";
-    
-    std::string phoenixInit = "float zRe = -pIm; float zIm = pRe, zpRe = fractal.cRe, zpIm = fractal.cIm;";
-    std::string phoenixCode = "float temp = zRe * zRe - zIm * zIm - 0.5f * zpRe + 0.5667, tempzRe = zRe, tempzIm = zIm; zIm = 2 * zRe * zIm - 0.5f * zpIm; zRe = temp, zpRe = tempzRe, zpIm = tempzIm;";
 
     std::string additional = R"(
         float norm(float re, float im) { 
@@ -101,12 +84,12 @@ std::string generateFractalShader(std::string fractal, std::string algorithm, st
         }
     )";};
     std::string fractalStruct = "struct Fractal{float cRe,cIm;};", fractalInit, fractalCode;
-    if (fractal == "buffalo") fractalInit = buffaloInit, fractalCode = buffaloCode;
-    else if (fractal == "burningship") fractalInit = burningShipInit, fractalCode = burningShipCode;
-    else if (fractal == "julia") fractalInit = juliaInit, fractalCode = juliaCode;
-    else if (fractal == "mandelbrot") fractalInit = mandelbrotInit, fractalCode = mandelbrotCode;
-    else if (fractal == "manowar") fractalInit = manowarInit, fractalCode = manowarCode;
-    else if (fractal == "phoenix") fractalInit = phoenixInit, fractalCode = phoenixCode;
+    if (fractal == "buffalo") fractalInit = Fractal::Buffalo::code.init, fractalCode = Fractal::Buffalo::code.code;
+    else if (fractal == "burningship") fractalInit = Fractal::BurningShip::code.init, fractalCode = Fractal::BurningShip::code.code;
+    else if (fractal == "julia") fractalInit = Fractal::Julia::code.init, fractalCode = Fractal::Julia::code.code;
+    else if (fractal == "mandelbrot") fractalInit = Fractal::Mandelbrot::code.init, fractalCode = Fractal::Mandelbrot::code.code;
+    else if (fractal == "manowar") fractalInit = Fractal::Manowar::code.init, fractalCode = Fractal::Manowar::code.code;
+    else if (fractal == "phoenix") fractalInit = Fractal::Phoenix::code.init, fractalCode = Fractal::Phoenix::code.code;
     else throw std::runtime_error("Fractal name does not exist.");
     if (algorithm == "escape") {
         if (color == "linear") {
