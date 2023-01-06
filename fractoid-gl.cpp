@@ -1,10 +1,8 @@
 #include "include/defaults.h"
 #include "include/canvas.h"
 #include "include/gui.h"
-#include "include/uniform.h"
 #include "lib/argparse/argparse.hpp"
-#include <iostream>
-#include <fstream>
+#include <random>
 
 void keyCallback(GLFWwindow* window, int key, int, int action, int mods) {
     if (GLFWPointer* pointer = (GLFWPointer*)glfwGetWindowUserPointer(window); action == GLFW_PRESS) {
@@ -110,14 +108,15 @@ int main(int argc, char** argv) {
         pointer.gui = &gui;
 
         // Create periodic coloring struct
-        Uniform a(Defaults::periodic.at("amplitude"), Defaults::periodic.at("seed").at(0));
-        Uniform p(Defaults::periodic.at("phase"), Defaults::periodic.at("seed").at(1));
+        std::uniform_real_distribution<double> a(Defaults::periodic.at("amplitude").at(0), Defaults::periodic.at("amplitude").at(1));
+        std::uniform_real_distribution<double> p(Defaults::periodic.at("phase").at(0), Defaults::periodic.at("phase").at(1));
+        std::mt19937 ag(Defaults::periodic.at("seed").at(0)), pg(Defaults::periodic.at("seed").at(1));
         pointer.settings.escape = Defaults::escape.get<Algorithm::Escape>();
         pointer.settings.orbitrap = Defaults::orbitrap.get<Algorithm::Orbitrap>();
         pointer.settings.linear = Defaults::linear.get<Color::Linear>();
         pointer.settings.periodic = Color::Periodic {
-            .r1 = (float)a.get(), .g1 = (float)a.get(), .b1 = (float)a.get(),
-            .r2 = (float)p.get(), .g2 = (float)p.get(), .b2 = (float)p.get()
+            .r1 = (float)a(ag), .g1 = (float)a(ag), .b1 = (float)a(ag),
+            .r2 = (float)p(pg), .g2 = (float)p(pg), .b2 = (float)p(pg)
         };
         pointer.settings.solid = Defaults::solid.get<Color::Solid>();
         pointer.settings.center = { -0.75, 0 };

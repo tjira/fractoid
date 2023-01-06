@@ -2,7 +2,6 @@
 #include "include/image.h"
 #include "include/painter.h"
 #include "include/timer.h"
-#include "include/uniform.h"
 #include "lib/argparse/argparse.hpp"
 #include <filesystem>
 
