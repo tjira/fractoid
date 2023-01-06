@@ -1,7 +1,6 @@
 #include "include/defaults.h"
 #include "include/image.h"
 #include "include/painter.h"
-#include "include/timer.h"
 #include "lib/argparse/argparse.hpp"
 #include <filesystem>
 
@@ -18,8 +17,8 @@ json patch(json input) {
 
 template<class F, class A, class C>
 Image run(const json& input, const F& fractal, const A& alg, const C& col) {
-    std::array<uchar, 3> background = input.value("background", std::array<uchar, 3>{ BACKGROUND });
-    std::array<int, 2> resolution = input.value("resolution", std::array<int, 2>{ RESOLUTION });
+    std::array<uchar, 3> background = input.value("background", std::array<uchar, 3>{ 0, 0, 0 });
+    std::array<int, 2> resolution = input.value("resolution", std::array<int, 2>{ 1920, 1080 });
     Painter painter(fractal, alg, col, { background, resolution });
     return painter.paint(input.at("center"), input.at("zoom"));
 }
@@ -76,8 +75,12 @@ int main(int argc, char** argv) {
 
     json input = patch(json::parse(std::ifstream(program.get<std::string>("-f"))));
 
-    Timer timer(true); Image image = run(input);
-    if (!program.get<bool>("-q")) std::cout << "Fractal generation took " << timer.elapsed() << " ms." << std::endl;
-    image.save(input.value("output", OUTPUT));
-    if (!program.get<bool>("-q")) std::cout << "Fractal export took " << timer.elapsed() << " ms." << std::endl;
+    std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock().now();
+    Image image = run(input);
+    long t1 = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock().now() - start).count();
+    image.save(input.value("output", "fractal.png"));
+    long t2 = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock().now() - start).count();
+
+    if (!program.get<bool>("-q")) std::cout << "Fractal generation took " << t1 << " ms." << std::endl;
+    if (!program.get<bool>("-q")) std::cout << "Fractal export took " << t2 - t1 << " ms." << std::endl;
 }

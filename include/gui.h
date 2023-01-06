@@ -13,8 +13,8 @@ class Gui;
 
 struct GLFWPointer {
     std::vector<std::string> state = { "mandelbrot", "escape", "periodic" };
+    int width = 1280, height = 720, major = 4, minor = 2;
     bool mleft = 0, mright = 0, fullscreen = 0;
-    int width, height, major = 4, minor = 2;
     std::string title = "Fractoid";
     glm::vec2 mouse{};
     struct Camera {

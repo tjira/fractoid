@@ -3,10 +3,6 @@
 #include "../lib/json/json.hpp"
 #include <complex>
 
-#define BACKGROUND 0, 0, 0
-#define OUTPUT "fractal.png"
-#define RESOLUTION 1280, 720
-
 using json = nlohmann::json;
 
 namespace std {

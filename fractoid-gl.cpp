@@ -62,8 +62,7 @@ int main(int argc, char** argv) {
     }
     
     // Create GLFW variable struct and a window pointer
-    GLFWPointer pointer { .width = std::vector<int>{RESOLUTION}[0], .height = std::vector<int>{RESOLUTION}[1] };
-    GLFWwindow* window;
+    GLFWPointer pointer; GLFWwindow* window;
 
     // Initialize GLFW and throw error if failed
     if(!glfwInit()) {
