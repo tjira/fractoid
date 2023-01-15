@@ -1,5 +1,4 @@
 #include "../include/shader.h"
-#include <include/algorithm.h>
 
 std::string generateFractalShader(std::string fractal, std::string algorithm, std::string color) {
     std::string shader = "#version 420 core\nfloat norm(float re,float im){return re*re+im*im;}";
