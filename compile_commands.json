@@ -3,32 +3,6 @@
         "arguments": [
             "g++",
             "-c",
-            "-std=c++17",
-            "-fopenmp",
-            "-O3",
-            "-Wall",
-            "-o",
-            "canvas.o",
-            "src/canvas.cpp"
-        ],
-        "directory": "/home/tojira/Software/projects/fractoid",
-        "file": "src/canvas.cpp"
-    },
-    {
-        "arguments": [
-            "g++",
-            "-c",
-            "-o",
-            "imgui.o",
-            "lib/imgui/imgui.cpp"
-        ],
-        "directory": "/home/tojira/Software/projects/fractoid",
-        "file": "lib/imgui/imgui.cpp"
-    },
-    {
-        "arguments": [
-            "g++",
-            "-c",
             "-o",
             "imgui_widgets.o",
             "lib/imgui/imgui_widgets.cpp"
@@ -51,56 +25,16 @@
         "arguments": [
             "g++",
             "-c",
+            "-std=c++17",
+            "-fopenmp",
+            "-O3",
+            "-Wall",
             "-o",
-            "imgui_glfw.o",
-            "lib/imgui/imgui_impl_glfw.cpp"
+            "image.o",
+            "src/image.cpp"
         ],
         "directory": "/home/tojira/Software/projects/fractoid",
-        "file": "lib/imgui/imgui_impl_glfw.cpp"
-    },
-    {
-        "arguments": [
-            "g++",
-            "-c",
-            "-o",
-            "glad.o",
-            "lib/GL/gl.c"
-        ],
-        "directory": "/home/tojira/Software/projects/fractoid",
-        "file": "lib/GL/gl.c"
-    },
-    {
-        "arguments": [
-            "g++",
-            "-c",
-            "-o",
-            "imgui_tables.o",
-            "lib/imgui/imgui_tables.cpp"
-        ],
-        "directory": "/home/tojira/Software/projects/fractoid",
-        "file": "lib/imgui/imgui_tables.cpp"
-    },
-    {
-        "arguments": [
-            "g++",
-            "-c",
-            "-o",
-            "imgui_dilog.o",
-            "lib/imgui/ImGuiFileDialog.cpp"
-        ],
-        "directory": "/home/tojira/Software/projects/fractoid",
-        "file": "lib/imgui/ImGuiFileDialog.cpp"
-    },
-    {
-        "arguments": [
-            "g++",
-            "-c",
-            "-o",
-            "imgui_opengl.o",
-            "lib/imgui/imgui_impl_opengl3.cpp"
-        ],
-        "directory": "/home/tojira/Software/projects/fractoid",
-        "file": "lib/imgui/imgui_impl_opengl3.cpp"
+        "file": "src/image.cpp"
     },
     {
         "arguments": [
@@ -121,16 +55,38 @@
         "arguments": [
             "g++",
             "-c",
+            "-o",
+            "imgui.o",
+            "lib/imgui/imgui.cpp"
+        ],
+        "directory": "/home/tojira/Software/projects/fractoid",
+        "file": "lib/imgui/imgui.cpp"
+    },
+    {
+        "arguments": [
+            "g++",
+            "-c",
             "-std=c++17",
             "-fopenmp",
             "-O3",
             "-Wall",
             "-o",
-            "shader.o",
-            "src/shader.cpp"
+            "canvas.o",
+            "src/canvas.cpp"
         ],
         "directory": "/home/tojira/Software/projects/fractoid",
-        "file": "src/shader.cpp"
+        "file": "src/canvas.cpp"
+    },
+    {
+        "arguments": [
+            "g++",
+            "-c",
+            "-o",
+            "imgui_dilog.o",
+            "lib/imgui/ImGuiFileDialog.cpp"
+        ],
+        "directory": "/home/tojira/Software/projects/fractoid",
+        "file": "lib/imgui/ImGuiFileDialog.cpp"
     },
     {
         "arguments": [
@@ -151,16 +107,64 @@
         "arguments": [
             "g++",
             "-c",
+            "-o",
+            "imgui_tables.o",
+            "lib/imgui/imgui_tables.cpp"
+        ],
+        "directory": "/home/tojira/Software/projects/fractoid",
+        "file": "lib/imgui/imgui_tables.cpp"
+    },
+    {
+        "arguments": [
+            "g++",
+            "-c",
             "-std=c++17",
             "-fopenmp",
             "-O3",
             "-Wall",
             "-o",
-            "image.o",
-            "src/image.cpp"
+            "buffer.o",
+            "src/buffer.cpp"
         ],
         "directory": "/home/tojira/Software/projects/fractoid",
-        "file": "src/image.cpp"
+        "file": "src/buffer.cpp"
+    },
+    {
+        "arguments": [
+            "g++",
+            "-c",
+            "-std=c++17",
+            "-fopenmp",
+            "-O3",
+            "-Wall",
+            "-o",
+            "callback.o",
+            "src/callback.cpp"
+        ],
+        "directory": "/home/tojira/Software/projects/fractoid",
+        "file": "src/callback.cpp"
+    },
+    {
+        "arguments": [
+            "g++",
+            "-c",
+            "-o",
+            "glad.o",
+            "lib/GL/gl.c"
+        ],
+        "directory": "/home/tojira/Software/projects/fractoid",
+        "file": "lib/GL/gl.c"
+    },
+    {
+        "arguments": [
+            "g++",
+            "-c",
+            "-o",
+            "imgui_opengl.o",
+            "lib/imgui/imgui_impl_opengl3.cpp"
+        ],
+        "directory": "/home/tojira/Software/projects/fractoid",
+        "file": "lib/imgui/imgui_impl_opengl3.cpp"
     },
     {
         "arguments": [
@@ -177,15 +181,26 @@
         "arguments": [
             "g++",
             "-c",
+            "-o",
+            "imgui_glfw.o",
+            "lib/imgui/imgui_impl_glfw.cpp"
+        ],
+        "directory": "/home/tojira/Software/projects/fractoid",
+        "file": "lib/imgui/imgui_impl_glfw.cpp"
+    },
+    {
+        "arguments": [
+            "g++",
+            "-c",
             "-std=c++17",
             "-fopenmp",
             "-O3",
             "-Wall",
             "-o",
-            "buffer.o",
-            "src/buffer.cpp"
+            "shader.o",
+            "src/shader.cpp"
         ],
         "directory": "/home/tojira/Software/projects/fractoid",
-        "file": "src/buffer.cpp"
+        "file": "src/shader.cpp"
     }
 ]

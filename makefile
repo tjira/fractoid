@@ -10,7 +10,7 @@ all: fractoid
 
 # Link =================================================================================================================
 
-fractoid: fractoid.o buffer.o canvas.o gui.o image.o shader.o glad.o imgui.o imgui_demo.o imgui_dilog.o imgui_draw.o imgui_glfw.o imgui_opengl.o imgui_tables.o imgui_widgets.o
+fractoid: fractoid.o buffer.o callback.o canvas.o gui.o image.o shader.o glad.o imgui.o imgui_demo.o imgui_dilog.o imgui_draw.o imgui_glfw.o imgui_opengl.o imgui_tables.o imgui_widgets.o
 	g++ $(FLAGS) -o $@ $^ $(LIBS)
 
 fractoid.o: fractoid.cpp
@@ -19,6 +19,9 @@ fractoid.o: fractoid.cpp
 # Project ==============================================================================================================
 
 buffer.o: src/buffer.cpp
+	g++ $(FLAGS) -c -o $@ $^
+
+callback.o: src/callback.cpp
 	g++ $(FLAGS) -c -o $@ $^
 
 canvas.o: src/canvas.cpp
