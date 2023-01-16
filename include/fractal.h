@@ -41,7 +41,6 @@ namespace Fractal {
         };
     };
     struct Julia {
-        std::complex<double> c{ 0, 1 };
         inline static ShaderCode code = {
             "float zRe = pRe, zIm = pIm;", R"(
                 float zReTemp = zRe;
@@ -49,6 +48,7 @@ namespace Fractal {
                 zIm = 2 * zReTemp * zIm + fractal.cIm;
             )"
         };
+        std::complex<double> c{ 0, 1 };
     };
     struct Mandelbrot {
         inline static ShaderCode code = {
@@ -70,7 +70,6 @@ namespace Fractal {
         };
     };
     struct Phoenix {
-        std::complex<double> c{ 0, 0 };
         inline static ShaderCode code = {
             "float zRe = -pIm; float zIm = pRe, zpRe = fractal.cRe, zpIm = fractal.cIm;", R"(
                 float zReTemp = zRe, zImTemp = zIm;
@@ -79,5 +78,6 @@ namespace Fractal {
                 zpRe = zReTemp, zpIm = zImTemp;
             )"
         };
+        std::complex<double> c{ 0, 0 };
     };
 };

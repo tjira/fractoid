@@ -70,4 +70,4 @@ imgui_widgets.o: lib/imgui/imgui_widgets.cpp
 # Miscellaneous ========================================================================================================
 
 clean:
-	rm -rf fractoid .cache .clangd .makefile .vscode *.exe *.o *.png
+	rm -rf compile_commands.json fractoid .cache .clangd .makefile .vscode *.exe *.o *.png
