@@ -2,8 +2,6 @@
 .clangd/
 .makefile/
 .vscode/
-compile_commands.json
-fractal.json
 fractoid
 *.exe
 *.o

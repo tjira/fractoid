@@ -10,7 +10,7 @@ all: fractoid
 
 # Link =================================================================================================================
 
-fractoid: fractoid.o buffer.o canvas.o gui.o shader.o glad.o image.o imgui.o imgui_demo.o imgui_dilog.o imgui_draw.o imgui_glfw.o imgui_opengl.o imgui_tables.o imgui_widgets.o
+fractoid: fractoid.o buffer.o canvas.o gui.o image.o shader.o glad.o imgui.o imgui_demo.o imgui_dilog.o imgui_draw.o imgui_glfw.o imgui_opengl.o imgui_tables.o imgui_widgets.o
 	g++ $(FLAGS) -o $@ $^ $(LIBS)
 
 fractoid.o: fractoid.cpp
@@ -67,4 +67,4 @@ imgui_widgets.o: lib/imgui/imgui_widgets.cpp
 # Miscellaneous ========================================================================================================
 
 clean:
-	rm -rf compile_commands.json fractal.json fractoid .cache .clangd .makefile .vscode *.exe *.o *.png
+	rm -rf fractoid .cache .clangd .makefile .vscode *.exe *.o *.png
