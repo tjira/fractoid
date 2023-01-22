@@ -94,12 +94,12 @@ void Gui::render() {
         }
         if (ImGui::CollapsingHeader("Periodic Options")) {
             ImGui::PushID(3);
-            std::vector<float> amplitude = { (float)pointer->settings.periodic.r1, (float)pointer->settings.periodic.g1, (float)pointer->settings.periodic.b1 };
-            std::vector<float> phase = { (float)pointer->settings.periodic.r2, (float)pointer->settings.periodic.g2, (float)pointer->settings.periodic.b2 };
+            std::vector<float> amplitude{ pointer->settings.periodic.amplitude.begin(), pointer->settings.periodic.amplitude.end() };
+            std::vector<float> phase{ pointer->settings.periodic.phase.begin(), pointer->settings.periodic.phase.end() };
             ImGui::SliderFloat3("Amplitude", amplitude.data(), 0, 32);
             ImGui::SliderFloat3("Phase", phase.data(), 0, 6.283);
-            pointer->settings.periodic.r1 = amplitude.at(0), pointer->settings.periodic.g1 = amplitude.at(1), pointer->settings.periodic.b1 = amplitude.at(2);
-            pointer->settings.periodic.r2 = phase.at(0), pointer->settings.periodic.g2 = phase.at(1), pointer->settings.periodic.b2 = phase.at(2);
+            pointer->settings.periodic.amplitude = { amplitude.at(0), amplitude.at(1), amplitude.at(2) };
+            pointer->settings.periodic.phase = { phase.at(0), phase.at(1), phase.at(2) };
             ImGui::PopID();
         }
         if (ImGui::CollapsingHeader("Solid Options")) {

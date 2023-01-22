@@ -31,9 +31,8 @@ namespace Defaults {
     })"_json;
 
     static json periodic = R"({
-        "amplitude" : [ 8, 32 ],
-        "phase" : [ 0, 6.28 ],
-        "seed" : [ 1, 1 ]
+        "amplitude" : [ 31.93, 30.38, 11.08 ],
+        "phase" : [ 6.26, 5.86, 0.80 ]
     })"_json;
 
     static json linear = R"({

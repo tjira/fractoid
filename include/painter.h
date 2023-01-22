@@ -29,16 +29,10 @@ private:
     F fractal;
 };
 
+#include <iostream>
+
 template <class F, class A, class C>
-Painter<F, A, C>::Painter(const F& fractal, const A& alg, const C& col, const Options& options) : options(options), alg(alg), col(col), fractal(fractal) {
-    if constexpr (std::is_same<C, Color::Periodic>()) {
-        std::uniform_real_distribution<double> a(col.amplitude.at(0), col.amplitude.at(1));
-        std::uniform_real_distribution<double> p(col.phase.at(0), col.phase.at(1));
-        std::mt19937 ag(col.seed.at(0)), pg(col.seed.at(1));
-        this->col.r1 = a(ag), this->col.g1 = a(ag), this->col.b1 = a(ag);
-        this->col.r2 = p(pg), this->col.g2 = p(pg), this->col.b2 = p(pg);
-    }
-}
+Painter<F, A, C>::Painter(const F& fractal, const A& alg, const C& col, const Options& options) : options(options), alg(alg), col(col), fractal(fractal) {}
 
 template <class F, class A, class C>
 Image Painter<F, A, C>::paint(std::complex<double> center, double zoom) const {

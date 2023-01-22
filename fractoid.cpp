@@ -118,16 +118,10 @@ void gui(const argparse::ArgumentParser& program) {
         pointer.gui = &gui;
 
         // Create periodic coloring struct
-        std::uniform_real_distribution<double> a(Defaults::periodic.at("amplitude").at(0), Defaults::periodic.at("amplitude").at(1));
-        std::uniform_real_distribution<double> p(Defaults::periodic.at("phase").at(0), Defaults::periodic.at("phase").at(1));
-        std::mt19937 ag(Defaults::periodic.at("seed").at(0)), pg(Defaults::periodic.at("seed").at(1));
         pointer.settings.escape = Defaults::escape.get<Algorithm::Escape>();
         pointer.settings.orbitrap = Defaults::orbitrap.get<Algorithm::Orbitrap>();
         pointer.settings.linear = Defaults::linear.get<Color::Linear>();
-        pointer.settings.periodic = Color::Periodic {
-            .r1 = (float)a(ag), .g1 = (float)a(ag), .b1 = (float)a(ag),
-            .r2 = (float)p(pg), .g2 = (float)p(pg), .b2 = (float)p(pg)
-        };
+        pointer.settings.periodic = Defaults::periodic.get<Color::Periodic>();
         pointer.settings.solid = Defaults::solid.get<Color::Solid>();
         pointer.settings.center = { -0.75, 0 };
         pointer.settings.zoom = 1.2;
@@ -164,12 +158,12 @@ void gui(const argparse::ArgumentParser& program) {
                 pointer.shader.set("col.from", pointer.settings.linear.from);
                 pointer.shader.set("col.to", pointer.settings.linear.to);
             } else if(pointer.state.at(2) == "periodic") {
-                pointer.shader.set("col.r1", pointer.settings.periodic.r1);
-                pointer.shader.set("col.g1", pointer.settings.periodic.g1);
-                pointer.shader.set("col.b1", pointer.settings.periodic.b1);
-                pointer.shader.set("col.r2", pointer.settings.periodic.r2);
-                pointer.shader.set("col.g2", pointer.settings.periodic.g2);
-                pointer.shader.set("col.b2", pointer.settings.periodic.b2);
+                pointer.shader.set("col.r1", pointer.settings.periodic.amplitude.at(0));
+                pointer.shader.set("col.g1", pointer.settings.periodic.amplitude.at(1));
+                pointer.shader.set("col.b1", pointer.settings.periodic.amplitude.at(2));
+                pointer.shader.set("col.r2", pointer.settings.periodic.phase.at(0));
+                pointer.shader.set("col.g2", pointer.settings.periodic.phase.at(1));
+                pointer.shader.set("col.b2", pointer.settings.periodic.phase.at(2));
             } else if (pointer.state.at(2) == "solid") {
                 pointer.shader.set("col.rgb", pointer.settings.solid.rgb);
             }

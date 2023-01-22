@@ -18,14 +18,12 @@ namespace Color {
     struct Periodic {
         static std::string code;
         std::tuple<uchar, uchar, uchar> get(double v) const {
-            uchar r = (std::sin(r1 * v + r2) + 1) * 127.5;
-            uchar g = (std::sin(g1 * v + g2) + 1) * 127.5;
-            uchar b = (std::sin(b1 * v + b2) + 1) * 127.5;
+            uchar r = (std::sin(amplitude.at(0) * v + phase.at(0)) + 1) * 127.5;
+            uchar g = (std::sin(amplitude.at(1) * v + phase.at(1)) + 1) * 127.5;
+            uchar b = (std::sin(amplitude.at(2) * v + phase.at(2)) + 1) * 127.5;
             return { r , g, b };
         };
-        std::array<double, 2> amplitude, phase;
-        double r1, g1, b1, r2, g2, b2;
-        std::array<long, 2> seed;
+        std::array<double, 3> amplitude, phase;
     };
     struct Solid {
         static std::string code;
@@ -35,7 +33,7 @@ namespace Color {
         std::array<int, 3> rgb;
     };
     NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Linear, from, to)
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Periodic, amplitude, phase, seed)
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Periodic, amplitude, phase)
     NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Solid, rgb)
 };
 
