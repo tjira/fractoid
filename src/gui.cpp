@@ -1,5 +1,4 @@
 #include "../include/gui.h"
-#include <include/defaults.h>
 #include <iostream>
 
 Gui::Gui(GLFWwindow* window) : window(window) {
@@ -125,7 +124,7 @@ void Gui::render() {
             nlohmann::json output;
             output["fractal"] = {{"name", pointer->state.at(0)}};
             if (pointer->state.at(0) == "julia") output["fractal"] = json(pointer->settings.julia);
-            else if (pointer->state.at(1) == "phoenix") output["fractal"] = json(pointer->settings.phoenix);
+            else if (pointer->state.at(0) == "phoenix") output["fractal"] = json(pointer->settings.phoenix);
             if (pointer->state.at(1) == "escape") output["algorithm"] = json(pointer->settings.escape);
             else if (pointer->state.at(1) == "orbitrap") output["algorithm"] = json(pointer->settings.orbitrap);
             if (pointer->state.at(2) == "linear") output["color"] = json(pointer->settings.linear);
@@ -133,8 +132,8 @@ void Gui::render() {
             else if (pointer->state.at(2) == "solid") output["color"] = json(pointer->settings.solid);
             output["fractal"]["name"] = pointer->state.at(0);
             output["algorithm"]["name"] = pointer->state.at(1);
-            output["color"]["name"] = pointer->state.at(2);
             output["center"] = json(std::complex<double>{pointer->settings.center.real(), -pointer->settings.center.imag()});
+            output["color"]["name"] = pointer->state.at(2);
             output["zoom"] = pointer->settings.zoom;
             std::ofstream file(ImGuiFileDialog::Instance()->GetFilePathName());
             file << std::setw(4) << output << std::endl;

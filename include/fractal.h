@@ -73,7 +73,7 @@ namespace Fractal {
     };
     struct Phoenix {
         inline static ShaderCode code = {
-            "float zRe = -pIm; float zIm = pRe, zpRe = fractal.cRe, zpIm = fractal.cIm;", R"(
+            "float zRe = pRe; float zIm = pIm, zpRe = fractal.cRe, zpIm = fractal.cIm;", R"(
                 float zReTemp = zRe, zImTemp = zIm;
                 zRe = zRe * zRe - zIm * zIm - 0.5f * zpRe + 0.5667f;
                 zIm = 2 * zReTemp * zIm - 0.5f * zpIm;
