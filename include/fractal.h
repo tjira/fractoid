@@ -1,5 +1,7 @@
 #pragma once
 
+#include "defaults.h"
+#include "../lib/json/json.hpp"
 #include <complex>
 
 #define ABS(X) ((X) < 0 ? -(X) : (X))
@@ -80,4 +82,6 @@ namespace Fractal {
         };
         std::complex<double> c{ 0, 0 };
     };
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Julia, c);
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Phoenix, c);
 };

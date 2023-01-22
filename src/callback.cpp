@@ -2,7 +2,13 @@
 
 void keyCallback(GLFWwindow* window, int key, int, int action, int mods) {
     if (GLFWPointer* pointer = (GLFWPointer*)glfwGetWindowUserPointer(window); action == GLFW_PRESS) {
-        if (key == GLFW_KEY_F1) pointer->gui->options = !pointer->gui->options; 
+        if (mods == GLFW_MOD_CONTROL && action == GLFW_PRESS) {
+            if (key == GLFW_KEY_S) {
+                ImGuiFileDialog::Instance()->OpenDialog("Export Fractoid Input", "Export Fractoid Input", "Fractoid inputs{.json}, All Files{.*}", ".");
+            } else if (key == GLFW_KEY_Q) {
+                glfwSetWindowShouldClose(window, GLFW_TRUE);
+            }
+        } else if (key == GLFW_KEY_F1) pointer->gui->options = !pointer->gui->options; 
         else if (key == GLFW_KEY_F11) {
             static int xpos0, ypos0, width0, height0; int xpos, ypos, width, height;
             if (pointer->fullscreen = !pointer->fullscreen; pointer->fullscreen) {

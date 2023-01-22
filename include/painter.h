@@ -29,8 +29,6 @@ private:
     F fractal;
 };
 
-#include <iostream>
-
 template <class F, class A, class C>
 Painter<F, A, C>::Painter(const F& fractal, const A& alg, const C& col, const Options& options) : options(options), alg(alg), col(col), fractal(fractal) {}
 

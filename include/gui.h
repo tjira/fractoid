@@ -6,10 +6,11 @@
 #include "shader.h"
 #include "../lib/imgui/imgui_impl_opengl3.h"
 #include "../lib/imgui/imgui_impl_glfw.h"
+#include "../lib/imgui/ImGuiFileDialog.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <GLFW/glfw3.h>
 
-class Gui;
+struct Gui;
 
 struct GLFWPointer {
     std::vector<std::string> state = { "mandelbrot", "escape", "periodic" };

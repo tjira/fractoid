@@ -7,7 +7,9 @@
 #include <filesystem>
 
 json patch(json input) {
-    std::string algorithm = input.at("algorithm").at("name"), color = input.at("color").at("name");
+    std::string fractal = input.at("fractal").at("name"), algorithm = input.at("algorithm").at("name"), color = input.at("color").at("name");
+    if (fractal == "julia") Defaults::julia.merge_patch(input.at("fractal")), input.at("fractal") = Defaults::julia;
+    if (fractal == "phoenix") Defaults::phoenix.merge_patch(input.at("fractal")), input.at("fractal") = Defaults::phoenix;
     if (algorithm == "density") Defaults::density.merge_patch(input.at("algorithm")), input.at("algorithm") = Defaults::density;
     if (algorithm == "escape") Defaults::escape.merge_patch(input.at("algorithm")), input.at("algorithm") = Defaults::escape;
     if (algorithm == "orbitrap") Defaults::orbitrap.merge_patch(input.at("algorithm")), input.at("algorithm") = Defaults::orbitrap;
@@ -47,10 +49,10 @@ Image run(const json& input) {
     using namespace Fractal;
     if (input.at("fractal").at("name") == "buffalo") return run(input, Buffalo{});
     else if (input.at("fractal").at("name") == "burningship") return run(input, BurningShip{});
-    else if (input.at("fractal").at("name") == "julia") return run(input, Julia{ { 0, 1 } });
+    else if (input.at("fractal").at("name") == "julia") return run(input, input.at("fractal").get<Julia>());
     else if (input.at("fractal").at("name") == "mandelbrot") return run(input, Mandelbrot{});
     else if (input.at("fractal").at("name") == "manowar") return run(input, Manowar{});
-    else if (input.at("fractal").at("name") == "phoenix") return run(input, Phoenix{ { 0, 0 } });
+    else if (input.at("fractal").at("name") == "phoenix") return run(input, input.at("fractal").get<Phoenix>());
     else throw std::runtime_error("Fractal name '" + std::string(input.at("fractal").at("name")) + "' not found.");
 }
 

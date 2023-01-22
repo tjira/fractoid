@@ -7,9 +7,18 @@ using json = nlohmann::json;
 
 namespace std {
     template<typename T> void from_json(const json &j, std::complex<T>& c) { c.real(j.at(0)), c.imag(j.at(1)); };
+    template< class T > void to_json(json &j, const std::complex< T > &p) { j = json{p.real(), p.imag()}; }
 }
 
 namespace Defaults {
+    static json julia = R"({
+        "c" : [ 0, 1 ]
+    })"_json;
+
+    static json phoenix = R"({
+        "c" : [ 0, 0 ]
+    })"_json;
+
     static json density = R"({
         "iterations" : 80,
         "bailout" : 10,
