@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../lib/json/json.hpp"
+#include <nlohmann/json.hpp>
 #include <complex>
 
 using json = nlohmann::json;

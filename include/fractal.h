@@ -1,7 +1,7 @@
 #pragma once
 
 #include "defaults.h"
-#include "../lib/json/json.hpp"
+#include <nlohmann/json.hpp>
 #include <complex>
 
 #define ABS(X) ((X) < 0 ? -(X) : (X))

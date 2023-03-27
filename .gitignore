@@ -2,8 +2,6 @@
 .clangd/
 .makefile/
 .vscode/
-fractoid
-*.exe
-*.json
-*.o
+build/
+bin/
 *.png

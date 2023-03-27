@@ -1,5 +1,4 @@
 #include "../include/gui.h"
-#include <iostream>
 
 Gui::Gui(GLFWwindow* window) : window(window) {
     ImGui::CreateContext();

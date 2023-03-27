@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../lib/json/json.hpp"
+#include <nlohmann/json.hpp>
 
 typedef unsigned char uchar;
 

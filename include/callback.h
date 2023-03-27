@@ -1,7 +1,6 @@
 #pragma once
 
 #include "gui.h"
-#include "../lib/imgui/ImGuiFileDialog.h"
 
 void keyCallback(GLFWwindow* window, int key, int, int action, int mods);
 void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);

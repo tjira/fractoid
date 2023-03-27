@@ -3,7 +3,7 @@
 #include "include/defaults.h"
 #include "include/image.h"
 #include "include/painter.h"
-#include "lib/argparse/argparse.hpp"
+#include <argparse/argparse.hpp>
 #include <filesystem>
 
 json patch(json input) {
@@ -93,7 +93,7 @@ void gui(const argparse::ArgumentParser& program) {
     }
 
     // Initialize GLAD
-    if (glfwMakeContextCurrent(window); !gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
+    if (glfwMakeContextCurrent(window); !gladLoadGL(glfwGetProcAddress)) {
         throw std::runtime_error("Error during GLAD initialization.");
     }
 
