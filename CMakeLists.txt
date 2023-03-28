@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.16)
 set(CMAKE_CXX_STANDARD 20)
 include(FetchContent)
 project(Fractoid)
@@ -53,16 +53,19 @@ set(IMBACKEND ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp ${imgui_SOURCE_DI
 set(FRACTOID src/buffer.cpp src/callback.cpp src/canvas.cpp src/gui.cpp src/image.cpp src/shader.cpp)
 set(IMDIALOG ${imdialog_SOURCE_DIR}/ImGuiFileDialog.cpp)
 
+# add glad library
+add_library(glad lib/GL/gl.c)
+
 # add imgui library
 add_library(imgui ${IMBACKEND} ${IMDIALOG} ${IMGUI})
 target_include_directories(imgui PRIVATE ${imgui_SOURCE_DIR})
 target_link_libraries(imgui glfw)
 
 # add fractoid executable
-add_executable(fractoid fractoid.cpp ${FRACTOID} lib/GL/gl.c)
+add_executable(fractoid fractoid.cpp ${FRACTOID})
 target_include_directories(fractoid PRIVATE ${imdialog_SOURCE_DIR} ${imgui_SOURCE_DIR} ${json_SOURCE_DIR}/include)
 target_compile_definitions(fractoid PRIVATE CXXFLAGS="${CXXFLAGS}")
-target_link_libraries(fractoid argparse imgui glm::glm)
+target_link_libraries(fractoid argparse glad imgui glm::glm)
 
 # link OpenMP on build type
 if(OPENMP_FOUND AND ${CMAKE_BUILD_TYPE} STREQUAL Release)
