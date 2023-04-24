@@ -1,7 +1,12 @@
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.16)
 set(CMAKE_CXX_STANDARD 20)
 include(FetchContent)
 project(Fractoid)
+
+# if cmake version is greater than 3.24 set the policies
+if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.24")
+    cmake_policy(SET CMP0135 NEW)
+endif()
 
 # set output flags
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
