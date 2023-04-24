@@ -1,0 +1,80 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: write
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Packages
+        run: sudo apt install -y libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev
+
+      - name: Configure Fractoid
+        run: cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+      - name: Build Fractoid
+        run: cmake --build build
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          path: bin/fractoid
+
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Packages
+        run: pip install jinja2
+
+      - name: Configure Fractoid
+        run: cmake -B build -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+      - name: Build Fractoid
+        run: cmake --build build
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          path: bin/hview.exe
+
+  release:
+    runs-on: ubuntu-latest
+    needs: [build-linux, build-windows]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Move Executables
+        run: cp artifact/fractoid artifact/fractoid.exe ${{github.workspace}}
+
+      - name: Release Linux Fractoid
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{secrets.GITHUB_TOKEN}}
+          tag: ${{github.ref}}
+          file: fractoid
+
+      - name: Release Windows Version of Fractoid
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{secrets.GITHUB_TOKEN}}
+          tag: ${{github.ref}}
+          file: fractoid.exe

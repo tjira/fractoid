@@ -1,5 +1,5 @@
 #include "../include/image.h"
-#include "../lib/stb/stb_image_write.h"
+#include <stb_image_write.h>
 
 Image::Image(int width, int height, const std::array<uchar, 3>& background) : data(3 * width * height, 0), width(width), height(height) {
     if (background.at(0) + background.at(1) + background.at(2) != 0) {
