@@ -50,7 +50,7 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          path: bin/hview.exe
+          path: bin/fractoid.exe
 
   release:
     runs-on: ubuntu-latest
