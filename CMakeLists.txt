@@ -73,13 +73,13 @@ set(IMDIALOG ${imdialog_SOURCE_DIR}/ImGuiFileDialog.cpp)
 # add imgui library
 add_library(imgui ${IMBACKEND} ${IMDIALOG} ${IMGUI})
 target_include_directories(imgui PRIVATE ${imgui_SOURCE_DIR})
-target_link_libraries(imgui glfw)
+target_link_libraries(imgui glad glfw)
 
 # add fractoid executable
 add_executable(fractoid fractoid.cpp ${FRACTOID})
 target_include_directories(fractoid PRIVATE ${imdialog_SOURCE_DIR} ${imgui_SOURCE_DIR} ${json_SOURCE_DIR}/include ${stb_SOURCE_DIR})
 target_compile_definitions(fractoid PRIVATE CXXFLAGS="${CXXFLAGS}")
-target_link_libraries(fractoid argparse glad imgui glm::glm)
+target_link_libraries(fractoid argparse imgui glm::glm)
 
 # link OpenMP on build type
 if(OPENMP_FOUND AND ${CMAKE_BUILD_TYPE} STREQUAL Release)
