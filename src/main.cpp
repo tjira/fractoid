@@ -1,8 +1,8 @@
-#include "include/callback.h"
-#include "include/canvas.h"
-#include "include/defaults.h"
-#include "include/image.h"
-#include "include/painter.h"
+#include "../include/callback.h"
+#include "../include/canvas.h"
+#include "../include/defaults.h"
+#include "../include/image.h"
+#include "../include/painter.h"
 #include <argparse/argparse.hpp>
 #include <filesystem>
 

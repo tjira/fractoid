@@ -67,7 +67,6 @@ find_package(OpenMP)
 # define the source files
 set(IMGUI ${imgui_SOURCE_DIR}/imgui.cpp ${imgui_SOURCE_DIR}/imgui_draw.cpp ${imgui_SOURCE_DIR}/imgui_tables.cpp ${imgui_SOURCE_DIR}/imgui_widgets.cpp)
 set(IMBACKEND ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp)
-set(FRACTOID src/buffer.cpp src/callback.cpp src/canvas.cpp src/gui.cpp src/image.cpp src/shader.cpp)
 set(IMDIALOG ${imdialog_SOURCE_DIR}/ImGuiFileDialog.cpp)
 
 # add imgui library
@@ -76,7 +75,7 @@ target_include_directories(imgui PRIVATE ${imgui_SOURCE_DIR})
 target_link_libraries(imgui glad glfw)
 
 # add fractoid executable
-add_executable(fractoid fractoid.cpp ${FRACTOID})
+add_executable(fractoid src/buffer.cpp src/callback.cpp src/canvas.cpp src/gui.cpp src/image.cpp src/main.cpp src/shader.cpp)
 target_include_directories(fractoid PRIVATE ${imdialog_SOURCE_DIR} ${imgui_SOURCE_DIR} ${json_SOURCE_DIR}/include ${stb_SOURCE_DIR})
 target_compile_definitions(fractoid PRIVATE CXXFLAGS="${CXXFLAGS}")
 target_link_libraries(fractoid argparse imgui glm::glm)
