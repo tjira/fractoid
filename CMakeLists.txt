@@ -3,14 +3,13 @@ set(CMAKE_CXX_STANDARD 20)
 include(FetchContent)
 project(Fractoid)
 
-# if cmake version is greater than 3.24 set the policies
-if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.24")
-    set(CMAKE_POLICY_DEFAULT_CMP0148 OLD)
-    cmake_policy(SET CMP0135 NEW)
-endif()
+# set cmake policies
+set(CMAKE_POLICY_DEFAULT_CMP0148 OLD)
+cmake_policy(SET CMP0135 NEW)
 
-# set output flags
+# set some flags
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
+set(CMAKE_WARN_DEPRECATED OFF CACHE BOOL "" FORCE)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # set compiler flags
@@ -37,16 +36,14 @@ set(GLFW_BUILD_EXAMPLES OFF)
 set(GLFW_BUILD_TESTS OFF)
 set(GLFW_BUILD_DOCS OFF)
 
-# download tar releases of some libraries
+# git clone libraries
 FetchContent_Declare(imdialog SYSTEM URL https://github.com/aiekick/ImGuiFileDialog/archive/refs/tags/v0.6.3.tar.gz)
-
-# git clone some libraries
 FetchContent_Declare(argparse SYSTEM GIT_REPOSITORY https://github.com/p-ranav/argparse.git GIT_TAG v2.9)
+FetchContent_Declare(json SYSTEM GIT_REPOSITORY https://github.com/nlohmann/json.git GIT_TAG v3.11.2)
 FetchContent_Declare(imgui SYSTEM GIT_REPOSITORY https://github.com/ocornut/imgui.git GIT_TAG v1.88)
+FetchContent_Declare(glad SYSTEM GIT_REPOSITORY https://github.com/Dav1dde/glad.git GIT_TAG v2.0.4)
 FetchContent_Declare(glfw SYSTEM GIT_REPOSITORY https://github.com/glfw/glfw.git GIT_TAG 3.3.8)
-FetchContent_Declare(glad GIT_REPOSITORY https://github.com/Dav1dde/glad.git GIT_TAG glad2)
-FetchContent_Declare(json SYSTEM GIT_REPOSITORY https://github.com/nlohmann/json.git)
-FetchContent_Declare(glm SYSTEM GIT_REPOSITORY https://github.com/g-truc/glm.git)
+FetchContent_Declare(glm SYSTEM GIT_REPOSITORY https://github.com/g-truc/glm GIT_TAG 0.9.9.8)
 FetchContent_Declare(stb GIT_REPOSITORY https://github.com/nothings/stb.git)
 
 # fetch the dependencies
