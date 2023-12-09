@@ -1,6 +1,7 @@
 .cache/
 .clangd/
 .makefile/
+.vs/
 .vscode/
 build/
 bin/
