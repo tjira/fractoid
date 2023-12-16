@@ -59,8 +59,11 @@ add_custom_command(TARGET glad POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy
     ${CMAKE_CURRENT_BINARY_DIR}/gladsources/glad/include/GL/gl.h
 )
 
-# find the necessary packages
-find_package(OpenMP)
+# find OpenMP if enabled
+if (${GOMP})
+    find_package(OpenMP REQUIRED)
+endif()
+unset(GOMP CACHE)
 
 # define the source files
 set(IMGUI ${imgui_SOURCE_DIR}/imgui.cpp ${imgui_SOURCE_DIR}/imgui_draw.cpp ${imgui_SOURCE_DIR}/imgui_tables.cpp ${imgui_SOURCE_DIR}/imgui_widgets.cpp)
