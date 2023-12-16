@@ -22,7 +22,7 @@ jobs:
         run: sudo apt install -y libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev
 
       - name: Configure Fractoid
-        run: cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DGOMP=ON
+        run: cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
       - name: Build Fractoid
         run: cmake --build build --parallel 2
@@ -45,7 +45,7 @@ jobs:
         run: sudo apt install -y libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev
 
       - name: Configure Fractoid
-        run: cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        run: cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DGOMP=ON
 
       - name: Build Fractoid
         run: cmake --build build --parallel 2
