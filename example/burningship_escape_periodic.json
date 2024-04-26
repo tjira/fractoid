@@ -1,6 +1,6 @@
 {
     "fractal" : {
-        "name" : "mandelbrot"
+        "name" : "burningship"
     },
     "algorithm" : {
         "name" : "escape"
@@ -8,6 +8,6 @@
     "color" : {
         "name" : "periodic"
     },
-    "center" : [ -0.75, 0 ],
-    "zoom" : 1.1
+    "center" : [-0.45, 0.55],
+    "zoom" : 1.2
 }

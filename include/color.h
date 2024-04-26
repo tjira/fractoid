@@ -1,6 +1,6 @@
 #pragma once
 
-#include <nlohmann/json.hpp>
+#include "defaults.h"
 
 typedef unsigned char uchar;
 
@@ -36,27 +36,3 @@ namespace Color {
     NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Periodic, amplitude, phase)
     NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Solid, rgb)
 };
-
-inline std::string Color::Linear::code = R"(
-    vec4 colorize(float value) {
-        float r = (col.from.x + value * (col.to.x - col.from.x)) / 255.0f;
-        float g = (col.from.y + value * (col.to.y - col.from.y)) / 255.0f;
-        float b = (col.from.z + value * (col.to.z - col.from.z)) / 255.0f;
-        return vec4(r, g, b, 1.0f);
-    }
-)";
-
-inline std::string Color::Periodic::code = R"(
-    vec4 colorize(float value) {
-        float r = (sin(col.r1 * value + col.r2) + 1.0f) / 2.0f;
-        float g = (sin(col.g1 * value + col.g2) + 1.0f) / 2.0f;
-        float b = (sin(col.b1 * value + col.b2) + 1.0f) / 2.0f;
-        return vec4(r, g, b, 1.0f);
-    }
-)";
-
-inline std::string Color::Solid::code = R"(
-    vec4 colorize(float value) {
-        return vec4(col.rgb / 255.0f, 1.0f);
-    }
-)";

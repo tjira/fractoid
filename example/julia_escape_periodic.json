@@ -1,0 +1,13 @@
+{
+    "fractal" : {
+        "name" : "julia"
+    },
+    "algorithm" : {
+        "name" : "escape"
+    },
+    "color" : {
+        "name" : "periodic"
+    },
+    "center" : [0, 0],
+    "zoom" : 1.1
+}

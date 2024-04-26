@@ -1,10 +1,6 @@
-#include "../include/callback.h"
-#include "../include/canvas.h"
-#include "../include/defaults.h"
-#include "../include/image.h"
-#include "../include/painter.h"
-#include <argparse/argparse.hpp>
-#include <filesystem>
+#include "defaults.h"
+#include "image.h"
+#include "painter.h"
 
 json patch(json input) {
     std::string fractal = input.at("fractal").at("name"), algorithm = input.at("algorithm").at("name"), color = input.at("color").at("name");
@@ -73,132 +69,6 @@ void cli(const argparse::ArgumentParser& program) {
     if (!program.get<bool>("-q")) std::cout << "Fractal export took " << t2 - t1 << " ms." << std::endl;
 }
 
-void gui(const argparse::ArgumentParser& program) {
-    // Create GLFW variable struct and a window pointer
-    GLFWPointer pointer; GLFWwindow* window;
-
-    // Initialize GLFW and throw error if failed
-    if(!glfwInit()) {
-        throw std::runtime_error("Error during GLFW initialization.");
-    }
-
-    // Pass OpenGL version
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, pointer.major);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, pointer.minor);
-
-    // Create the window
-    if (window = glfwCreateWindow(pointer.width, pointer.height, pointer.title.c_str(), nullptr, nullptr); !window) {
-        throw std::runtime_error("Error during window creation.");
-    }
-
-    // Initialize GLAD
-    if (glfwMakeContextCurrent(window); !gladLoadGL(glfwGetProcAddress)) {
-        throw std::runtime_error("Error during GLAD initialization.");
-    }
-
-    // Enable some options
-    glfwSetWindowUserPointer(window, &pointer);
-    glfwSwapInterval(1);
-
-    // Set event callbacks
-    glfwSetMouseButtonCallback(window, mouseButtonCallback);
-    glfwSetCursorPosCallback(window, positionCallback);
-    glfwSetWindowSizeCallback(window, resizeCallback);
-    glfwSetKeyCallback(window, keyCallback);
-
-    // Initialize camera projection matrix
-    pointer.camera.proj = glm::ortho(0.0f, (float)pointer.width, (float)pointer.height, 0.0f, -1.0f, 1.0f);
-    
-    {
-        // Create canvas, shader and GUI
-        new(&pointer.shader) Shader(vertex, generateFractalShader("mandelbrot", "escape", "periodic"));
-        Canvas canvas(pointer.width, pointer.height);
-        Gui gui(window);
-
-        // Save GUI to the GLFW variable
-        pointer.gui = &gui;
-
-        // Create periodic coloring struct
-        pointer.settings.escape = Defaults::escape.get<Algorithm::Escape>();
-        pointer.settings.orbitrap = Defaults::orbitrap.get<Algorithm::Orbitrap>();
-        pointer.settings.linear = Defaults::linear.get<Color::Linear>();
-        pointer.settings.periodic = Defaults::periodic.get<Color::Periodic>();
-        pointer.settings.solid = Defaults::solid.get<Color::Solid>();
-        pointer.settings.center = { -0.75, 0 };
-        pointer.settings.zoom = 1.2;
-
-        // Enter the render loop
-        while (!glfwWindowShouldClose(window)) {
-
-            // Clear the color and depth buffer
-            glClear(GL_COLOR_BUFFER_BIT);
-
-            // Set the canvas to the correct height
-            canvas.resize(pointer.width, pointer.height);
-
-            // Set variables to shader
-            pointer.shader.set("u_proj", pointer.camera.proj);
-            pointer.shader.set("zoom", pointer.settings.zoom);
-            pointer.shader.set("re", pointer.settings.center.real());
-            pointer.shader.set("im", pointer.settings.center.imag());
-            pointer.shader.set("width", pointer.width);
-            pointer.shader.set("height", pointer.height);
-
-            // Set periodic coloring variables to shader
-            if (pointer.state.at(1) == "escape") {
-                pointer.shader.set("alg.iters", pointer.settings.escape.iterations);
-                pointer.shader.set("alg.bail", pointer.settings.escape.bailout);
-                pointer.shader.set("alg.smoothing", pointer.settings.escape.smooth);
-            } else if (pointer.state.at(1) == "orbitrap") {
-                pointer.shader.set("alg.iters", pointer.settings.orbitrap.iterations);
-                pointer.shader.set("alg.bail", pointer.settings.orbitrap.bailout);
-                pointer.shader.set("alg.trap", pointer.settings.orbitrap.trap);
-                pointer.shader.set("alg.fill", pointer.settings.orbitrap.fill);
-            }
-            if (pointer.state.at(2) == "linear") {
-                pointer.shader.set("col.from", pointer.settings.linear.from);
-                pointer.shader.set("col.to", pointer.settings.linear.to);
-            } else if(pointer.state.at(2) == "periodic") {
-                pointer.shader.set("col.r1", pointer.settings.periodic.amplitude.at(0));
-                pointer.shader.set("col.g1", pointer.settings.periodic.amplitude.at(1));
-                pointer.shader.set("col.b1", pointer.settings.periodic.amplitude.at(2));
-                pointer.shader.set("col.r2", pointer.settings.periodic.phase.at(0));
-                pointer.shader.set("col.g2", pointer.settings.periodic.phase.at(1));
-                pointer.shader.set("col.b2", pointer.settings.periodic.phase.at(2));
-            } else if (pointer.state.at(2) == "solid") {
-                pointer.shader.set("col.rgb", pointer.settings.solid.rgb);
-            }
-            if (pointer.state.at(0) == "julia") {
-                pointer.shader.set("fractal.cRe", pointer.settings.julia.c.real());
-                pointer.shader.set("fractal.cIm", pointer.settings.julia.c.imag());
-            } else if(pointer.state.at(0) == "phoenix") {
-                pointer.shader.set("fractal.cRe", pointer.settings.phoenix.c.real());
-                pointer.shader.set("fractal.cIm", pointer.settings.phoenix.c.imag());
-            }
-
-            // Zoom and move
-            if ((pointer.mleft || pointer.mright) && !ImGui::GetIO().WantCaptureMouse) {
-                glm::vec2 vector = 0.0002f * (pointer.mouse - glm::vec2(pointer.width / 2, pointer.height / 2));
-                pointer.settings.center += std::complex<double>(vector.x, vector.y) / pointer.settings.zoom;
-                pointer.settings.zoom /= pointer.mright ? 1.02 : 1;
-                pointer.settings.zoom *= pointer.mleft ? 1.02 : 1;
-            }
-
-            // Render canvas and GUI
-            canvas.render(pointer.shader);
-            gui.render();
-
-            // Swap buffers and poll events
-            glfwSwapBuffers(window);
-            glfwPollEvents();
-        }
-    }
-
-    // Clean up GLFW
-    glfwTerminate();
-}
-
 int main(int argc, char** argv) {
     argparse::ArgumentParser program("Fractoid", "1.0", argparse::default_arguments::none);
 
@@ -216,5 +86,5 @@ int main(int argc, char** argv) {
         std::cout << program.help().str(); return EXIT_SUCCESS;
     }
 
-    program.is_used("-f") ? cli(program) : gui(program);
+    cli(program);
 }

@@ -1,0 +1,13 @@
+{
+    "fractal" : {
+        "name" : "manowar"
+    },
+    "algorithm" : {
+        "name" : "escape"
+    },
+    "color" : {
+        "name" : "periodic"
+    },
+    "center" : [-0.35, 0],
+    "zoom" : 1.3
+}

@@ -1,10 +1,9 @@
 #pragma once
 
 #include "algorithm.h"
-#include "color.h"
 #include "fractal.h"
+#include "color.h"
 #include "image.h"
-#include <random>
 
 struct Options {
     std::array<uchar, 3> background;
@@ -81,7 +80,9 @@ void Painter<F, A, C>::density(Image &image, std::complex<double> center, double
         }
     }
     int max = *std::max_element(data.begin(), data.end());
-    #pragma omp parallel for default(none) shared(image, data, max)
+    #if defined(_OPENMP)
+    #pragma omp parallel for collapse(2)
+    #endif
     for (int i = 0; i < image.getHeight(); i++) {
         for (int j = 0; j < image.getWidth(); j++) {
             if (double value = (double)data.at(i * image.getWidth() + j) / max; value) {
@@ -93,7 +94,9 @@ void Painter<F, A, C>::density(Image &image, std::complex<double> center, double
 
 template <class F, class A, class C>
 void Painter<F, A, C>::escape(Image& image, std::complex<double> center, double zoom) const {using namespace Fractal;
-    #pragma omp parallel for default(none) shared(image, center, zoom)
+    #if defined(_OPENMP)
+    #pragma omp parallel for collapse(2)
+    #endif
     for (int i = 0; i < image.getHeight(); i++) {
         for (int j = 0; j < image.getWidth(); j++) {
             double im = -center.imag() + (3.0 * (i + 0.5) - 1.5 * image.getHeight()) / zoom / image.getHeight();
@@ -109,7 +112,9 @@ void Painter<F, A, C>::escape(Image& image, std::complex<double> center, double 
 
 template <class F, class A, class C>
 void Painter<F, A, C>::orbitrap(Image& image, std::complex<double> center, double zoom) const {using namespace Fractal;
-    #pragma omp parallel for default(none) shared(image, center, zoom)
+    #if defined(_OPENMP)
+    #pragma omp parallel for collapse(2)
+    #endif
     for (int i = 0; i < image.getHeight(); i++) {
         for (int j = 0; j < image.getWidth(); j++) {
             double im = -center.imag() + (3.0 * (i + 0.5) - 1.5 * image.getHeight()) / zoom / image.getHeight();

@@ -1,0 +1,13 @@
+{
+    "fractal" : {
+        "name" : "buffalo"
+    },
+    "algorithm" : {
+        "name" : "escape"
+    },
+    "color" : {
+        "name" : "periodic"
+    },
+    "center" : [-0.3, 0.4],
+    "zoom" : 0.9
+}

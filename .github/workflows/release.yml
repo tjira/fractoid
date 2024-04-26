@@ -35,29 +35,6 @@ jobs:
         with:
           path: bin/fractoid_linux_x86-64
 
-  build_linux_x86-64_openmp:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Install Packages
-        run: sudo apt install -y libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev
-
-      - name: Configure Fractoid
-        run: cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DGOMP=ON
-
-      - name: Build Fractoid
-        run: cmake --build build --parallel 2
-
-      - name: Rename Executable
-        run: mv bin/fractoid bin/fractoid_linux_x86-64_openmp
-
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          path: bin/fractoid_linux_x86-64_openmp
-
   build_windows_x86-64:
     runs-on: windows-latest
 
@@ -83,7 +60,7 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
-    needs: [build_linux_x86-64, build_linux_x86-64_openmp, build_windows_x86-64]
+    needs: [build_linux_x86-64, build_windows_x86-64]
 
     steps:
       - uses: actions/checkout@v3
@@ -100,26 +77,11 @@ jobs:
           zip -r fractoid_windows_x86-64.zip fractoid.exe example LICENSE.md
           tar -czf fractoid_linux_x86-64.tar.gz fractoid example LICENSE.md
 
-      - name: Copy x86-64_openmp Binaries to the Root Folder
-        run: |
-          cp artifact/fractoid_linux_x86-64_openmp fractoid
-
-      - name: Create x86-64_openmp Packages
-        run: |
-          tar -czf fractoid_linux_x86-64_openmp.tar.gz fractoid example LICENSE.md
-
       - name: Release linux_x86-64 Version of Fractoid
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{secrets.GITHUB_TOKEN}}
           file: fractoid_linux_x86-64.tar.gz
-          tag: ${{github.ref}}
-
-      - name: Release linux_x86-64_openmp Version of Fractoid
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{secrets.GITHUB_TOKEN}}
-          file: fractoid_linux_x86-64_openmp.tar.gz
           tag: ${{github.ref}}
 
       - name: Release windows_x86-64 Version of Fractoid

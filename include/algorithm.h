@@ -1,7 +1,6 @@
 #pragma once
 
-#include <nlohmann/json.hpp>
-#include <complex>
+#include "defaults.h"
 
 #define ESCAPE(FC) for(int n=0;n<alg.iterations;n++){FC;if(std::norm(z)>alg.bailout*alg.bailout){value=n;break;}}
 #define ORBIT(FC) for(int n=0;n<alg.iterations;n++){FC;if(std::norm(z)>alg.bailout*alg.bailout){break;}orbit.push_back(z);}
@@ -35,32 +34,3 @@ namespace Algorithm {
     NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Escape, iterations, bailout, smooth)
     NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Orbitrap, iterations, bailout, trap, fill)
 };
-
-inline std::function<std::string(std::string, std::string)> Algorithm::Escape::code = [](std::string init, std::string code) { return R"(
-    float function(float pRe, float pIm) {)"+init+R"(
-        for(int n = 0; n < alg.iters; n++){)"+code+R"(
-            if(norm(zRe, zIm) > alg.bail * alg.bail) {
-                return n - (alg.smoothing ? log2(0.5 * log(norm(zRe, zIm))) : 0);
-            }
-        }
-        return alg.iters;
-    }
-)";};
-
-inline std::function<std::string(std::string, std::string)> Algorithm::Orbitrap::code = [](std::string init, std::string code) { return R"(
-    float function(float pRe, float pIm) {)"+init+R"(float minDistance = alg.iters;
-        for(int n = 0; n < alg.iters; n++){)"+code+R"(
-            if(norm(zRe, zIm) > alg.bail * alg.bail) {
-                return minDistance;
-            }
-            float distance;
-            if (alg.trap == 1) distance = norm(zRe, zIm);
-            else if (alg.trap == 2) distance = min(abs(zRe), abs(zIm));
-            else if (alg.trap == 3) distance = 0.70710678f * min(abs(zRe - zIm), abs(zRe + zIm));
-            else if (alg.trap == 4) distance = abs(norm(zRe, zIm) - 1);
-            else if (alg.trap == 5) distance = min(norm(zRe, zIm), abs(norm(zRe, zIm) - 1));
-            if (distance < minDistance) minDistance = distance;
-        }
-        return alg.fill ? alg.iters : minDistance;
-    }
-)";};

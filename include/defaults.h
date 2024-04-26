@@ -1,7 +1,11 @@
 #pragma once
 
+#include <argparse/argparse.hpp>
 #include <nlohmann/json.hpp>
+
 #include <complex>
+#include <fstream>
+#include <random>
 
 using json = nlohmann::json;
 
@@ -12,17 +16,17 @@ namespace std {
 
 namespace Defaults {
     static json julia = R"({
-        "c" : [ 0, 1 ]
+        "c" : [0, 1]
     })"_json;
 
     static json phoenix = R"({
-        "c" : [ 0, 0 ]
+        "c" : [0, 0]
     })"_json;
 
     static json density = R"({
         "iterations" : 80,
         "bailout" : 10,
-        "samples" : 1000000,
+        "samples" : 10000000,
         "seed" : 1
     })"_json;
 
@@ -40,16 +44,16 @@ namespace Defaults {
     })"_json;
 
     static json periodic = R"({
-        "amplitude" : [ 31.93, 30.38, 11.08 ],
-        "phase" : [ 6.26, 5.86, 0.80 ]
+        "amplitude" : [31.93, 30.38, 11.08],
+        "phase" : [6.26, 5.86, 0.80]
     })"_json;
 
     static json linear = R"({
-        "from" : [ 0, 0, 0 ],
-        "to" : [ 255, 255, 255 ]
+        "from" : [0, 0, 0],
+        "to" : [255, 255, 255]
     })"_json;
 
     static json solid = R"({
-        "rgb" : [ 255, 255, 255 ]
+        "rgb" : [255, 255, 255]
     })"_json;
 }
