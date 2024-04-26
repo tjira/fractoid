@@ -18,8 +18,8 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g -pg -Og -Wall -Wextra")
 
 # static link if on Windows
 if(WIN32)
-    string(APPEND CMAKE_CXX_FLAGS_RELEASE "-static")
-    string(APPEND CMAKE_CXX_FLAGS_DEBUG "-static")
+    string(APPEND CMAKE_CXX_FLAGS_RELEASE " -static")
+    string(APPEND CMAKE_CXX_FLAGS_DEBUG " -static")
 endif()
 
 # git clone libraries
