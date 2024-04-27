@@ -19,9 +19,6 @@
 #define PHOENIX(ALG) z = p, zp = fractal.c; ALG(PHOENIXF)
 
 namespace Fractal {
-    struct ShaderCode {
-        std::string init, code;
-    };
     struct Buffalo {};
     struct BurningShip {};
     struct Julia {

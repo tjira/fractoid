@@ -1,0 +1,57 @@
+name: Generate
+
+on:
+  workflow_dispatch:
+    inputs:
+      fractal:
+        type: choice
+        options:
+        - mandelbrot
+        - julia
+        - burningship
+        - buffalo
+        - manowar
+        - phoenix
+      algorithm:
+        type: choice
+        options:
+        - escape
+        - orbitrap
+        - density
+      color:
+        type: choice
+        options:
+        - periodic
+        - linear
+        - solid
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure Fractoid
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build Fractoid
+        run: cmake --build build --parallel 2
+
+      - name: Create Input
+        run: |
+          jq -n '{fractal:{name:""},algorithm:{name:""},color:{name:""},center:[0,0],zoom:1}' > input.json
+          jq --arg name "${{github.event.inputs.algorithm}}" '.algorithm.name = $name' input.json
+          jq --arg name "${{github.event.inputs.fractal}}" '.fractal.name = $name' input.json
+          jq --arg name "${{github.event.inputs.color}}" '.color.name = $name' input.json
+
+      - name: Generate Fractal
+        run: ./bin/fractoid -f input.json
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: fractal
+          path: |
+            fractal.png
+            input.json
