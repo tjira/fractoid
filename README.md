@@ -52,13 +52,7 @@ Below are all the fractals and algorithms that are implemented in fractoid.
 
 ## 🛠️ Compilation
 
-The compilation is meant for linux users. You can compile it similarly on windows, but I recommend downloading the latest release binary. Before compilation, please install some basic X libraries.
-
-```bash
-sudo apt install libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev
-```
-
-After that, you can compile fractoid simply by the following command.
+The compilation is as simple as running the following command.
 
 ```bash
 cmake -B build -DCMAKE_BUILD_TYPE=Release . && cmake --build build
@@ -81,7 +75,7 @@ If you simply execute the binary you will launch the GUI. The navigation there i
     "color" : {
         "name" : "periodic"
     },
-    "center" : [ -0.75, 0 ],
+    "center" : [-0.75, 0],
     "zoom" : 1.1
 }
 ```
@@ -97,10 +91,5 @@ File `fractal.png` will be created in the current directory.
 ## ⭐ Credits
 
 * [argparse](https://github.com/p-ranav/argparse) - Argument Parser for Modern C++.
-* [glad](https://github.com/Dav1dde/glad) - Multi-Language Vulkan/GL/GLES/EGL/GLX/WGL Loader-Generator based on the official specs.
-* [glfw](https://github.com/glfw/glfw) - A multi-platform library for OpenGL, OpenGL ES, Vulkan, window and input .
-* [glm](https://github.com/g-truc/glm) - OpenGL Mathematics.
-* [imgui](https://github.com/ocornut/imgui) - Bloat-free Graphical User Interface for C++ with minimal dependencies.
-* [imguifiledialog](https://github.com/aiekick/ImGuiFileDialog) - File dialog for Dear ImGui.
 * [json](https://github.com/nlohmann/json) - JSON for Modern C++.
 * [stb](https://github.com/nothings/stb) - Single-file public domain libraries for C/C++.

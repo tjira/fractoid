@@ -16,10 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Install Packages
-        run: sudo apt install -y libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev
+      - uses: actions/checkout@v4
 
       - name: Configure Fractoid
         run: cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
@@ -31,15 +28,16 @@ jobs:
         run: mv bin/fractoid bin/fractoid_linux_x86-64
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
+          name: linux
           path: bin/fractoid_linux_x86-64
 
   build_windows_x86-64:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install Packages
         run: pip install jinja2
@@ -54,8 +52,9 @@ jobs:
         run: mv bin/fractoid.exe bin/fractoid_windows_x86-64.exe
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
+          name: windows
           path: bin/fractoid_windows_x86-64.exe
 
   release:
@@ -63,14 +62,14 @@ jobs:
     needs: [build_linux_x86-64, build_windows_x86-64]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Download Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
 
       - name: Copy x86-64 Binaries to the Root Folder
         run: |
-          cp artifact/fractoid_linux_x86-64 fractoid && cp artifact/fractoid_windows_x86-64.exe fractoid.exe
+          cp linux/fractoid_linux_x86-64 fractoid && cp windows/fractoid_windows_x86-64.exe fractoid.exe
 
       - name: Create x86-64 Packages
         run: |
