@@ -41,9 +41,9 @@ jobs:
       - name: Create Input
         run: |
           jq -n '{fractal:{name:""},algorithm:{name:""},color:{name:""},center:[0,0],zoom:1}' > input.json
-          jq --arg name "${{github.event.inputs.algorithm}}" '.algorithm.name = $name' input.json
-          jq --arg name "${{github.event.inputs.fractal}}" '.fractal.name = $name' input.json
-          jq --arg name "${{github.event.inputs.color}}" '.color.name = $name' input.json
+          jq --arg name "${{github.event.inputs.algorithm}}" '.algorithm.name = $name' input.json > input.json
+          jq --arg name "${{github.event.inputs.fractal}}" '.fractal.name = $name' input.json > input.json
+          jq --arg name "${{github.event.inputs.color}}" '.color.name = $name' input.json > input.json
 
       - name: Generate Fractal
         run: ./bin/fractoid -f input.json
