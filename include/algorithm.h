@@ -1,9 +1,7 @@
 #pragma once
 
-#include "defaults.h"
-
 #define ESCAPE(FC) for(int n=0;n<alg.iterations;n++){FC;if(std::norm(z)>alg.bailout*alg.bailout){value=n;break;}}
-#define ORBIT(FC) for(int n=0;n<alg.iterations;n++){FC;if(std::norm(z)>alg.bailout*alg.bailout){break;}orbit.push_back(z);}
+#define ORBIT(FC)  for(int n=0;n<alg.iterations;n++){FC;if(std::norm(z)>alg.bailout*alg.bailout){break;}orbit.push_back(z);}
 
 #define ORBITRAP_TRAP_1(P) std::norm(p)
 #define ORBITRAP_TRAP_2(P) std::min(std::abs(p.real()), std::abs(p.imag()))

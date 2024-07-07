@@ -13,13 +13,15 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 20)
 
 # set compiler flags
-set(CMAKE_CXX_FLAGS_RELEASE "-mavx -s -O3 -Wall -Wextra")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -pg -Og -Wall -Wextra")
+set(CMAKE_CXX_FLAGS_RELEASE "-s -O3 -Wall -Wextra")
 
 # static link if on Windows
 if(WIN32)
     string(APPEND CMAKE_CXX_FLAGS_RELEASE " -static")
     string(APPEND CMAKE_CXX_FLAGS_DEBUG " -static")
+else()
+    string(APPEND CMAKE_CXX_FLAGS_RELEASE " -march=native")
 endif()
 
 # git clone libraries

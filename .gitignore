@@ -1,9 +1,10 @@
-.cache/
+# folders
+.ccls-cache/
 .clangd/
-.makefile/
-.vs/
-.vscode/
+.cache/
 build/
 bin/
+
+# exts
+*.out
 *.png
-gmon.out

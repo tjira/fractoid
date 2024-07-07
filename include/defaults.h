@@ -4,14 +4,12 @@
 #include <nlohmann/json.hpp>
 
 #include <complex>
-#include <fstream>
-#include <random>
 
 using json = nlohmann::json;
 
 namespace std {
-    template<typename T> void from_json(const json &j, std::complex<T>& c) { c.real(j.at(0)), c.imag(j.at(1)); };
-    template< class T > void to_json(json &j, const std::complex< T > &p) { j = json{p.real(), p.imag()}; }
+    template<typename T> void from_json(const json &j, std::complex<T>& c) {c.real(j.at(0)), c.imag(j.at(1));};
+    template<class T> void to_json(json &j, const std::complex< T > &p) {j = json{p.real(), p.imag()};}
 }
 
 namespace Defaults {
